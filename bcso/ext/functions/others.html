@@ -1,0 +1,45 @@
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
+        aria-expanded="true" aria-controls="collapseFour">
+        <i class="fas fa-fw fa-user"></i>
+        <span>Rapports</span>
+    </a>
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="rapports.php">Liste</a>
+            <a class="collapse-item" href="add_rapports.php">Ajouter</a>
+        </div>
+    </div>
+</li>
+
+<!-- Nav Item - Pages Collapse Menu -->
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+        aria-expanded="true" aria-controls="collapsePages">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>Procédures</span>
+    </a>
+    <div id="collapsePages" class="collapse" aria-labelledby="procedures" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="rapport_model.php">Rapports</a>
+            <a class="collapse-item" href="compte_rendu_model.php">Compte-Rendu</a>
+            <a class="collapse-item" href="zones_dispatch.php">Zones Dispatch</a>
+        </div>
+    </div>
+    </li>
+
+
+
+echo'<li class="nav-item">';
+    echo '<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"';
+        echo 'aria-expanded="true" aria-controls="collapseAdmin">';
+        echo '<i class="fas fa-fw fa-file-lines"></i>';
+        echo '<span>Recrutement</span>';
+    echo '</a>';
+    echo '<div id="collapseAdmin" class="collapse" aria-labelledby="headingAdmin" data-parent="#accordionSidebar">';
+        echo '<div class="bg-white py-2 collapse-inner rounded">';
+            echo '<a class="collapse-item" href="candidatures.php">Candidatures</a>';
+            echo '<a class="collapse-item" href="recrutement_settings.php">Paramètres</a>';
+        echo'</div>';
+    echo '</div>';
+echo '</li>';
