@@ -35,52 +35,36 @@ echo '<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-
         </div>
     </li>';
 
-    $reqnotif = $bdd->prepare('SELECT * FROM notifications_lspd WHERE receiver = ? AND markasread = 0 ORDER BY datetime DESC');
-    $reqnotif->execute(array($_COOKIE['id']));
-    $data = $reqnotif->fetchAll();
-    $count = $reqnotif->rowCount();
-    echo '<!-- Nav Item - Alerts -->
+    /*<!-- Nav Item - Alerts -->
     <li class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
             <!-- Counter - Alerts -->
-            <span class="badge badge-info badge-counter">'.$count.'</span>
+            <span class="badge badge-info badge-counter">0</span>
         </a>
         <!-- Dropdown - Alerts -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
             aria-labelledby="alertsDropdown">
-            <h6 class="dropdown-header">Notifications</h6>';
-            if ($count > 0) {
-                foreach ($data as $notif){
-                    echo '<a class="dropdown-item d-flex align-items-center"><div class="mr-3">';
-                        if ($notif['type'] == "civil"){
-                            echo '<div class="icon-circle bg-success"><i class="fas fa-book text-white"></i></div>';
-                        }
-                        elseif ($notif['type'] == "casier"){
-                            echo '<div class="icon-circle bg-warning"><i class="fas fa-folder-open text-white"></i></div>';
-                        }elseif ($notif['type'] == "wanted"){
-                            echo '<div class="icon-circle bg-info"><i class="fas fa-handcuffs text-white"></i></div>';
-                        }elseif ($notif['type'] == "member"){
-                            echo '<div class="icon-circle bg-primary"><i class="fas fa-user text-white"></i></div>';
-                        }
-                        echo '</div>
-                        <div>
-                            <div class=" text-gray-500">'. date("d/m/Y H:i", strtotime($notif['datetime'])).'</div>
-                            <span class="">'. htmlspecialchars($notif['text']).'</span>
-                        </div>
-                    </a>';
-                }
-            }else{
-                echo '<a class="dropdown-item d-flex align-items-center"><div class="mr-3">
-                <div><span class="">Aucune notification non lue</span></div></div>
-                </a>';
-            }
-        echo '<a class="dropdown-item text-center small text-gray-500" href="notifications.php">Voir toutes les alertes</a>
+            <h6 class="dropdown-header">
+                Notifications
+            </h6>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+                <div class="mr-3">
+                    <div class="icon-circle bg-info">
+                        <i class="fas fa-star text-white"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="small text-gray-500">12 Janvier 2023</div>
+                    <span class="">Bienvenue sur l\'intranet BCSO</span>
+                </div>
+            </a>
+            <a class="dropdown-item text-center small text-gray-500" href="#">Voir toutes les alertes</a>
         </div>
-    </li>';
+    </li>
 
-    /*<!-- Nav Item - Messages -->
+    <!-- Nav Item - Messages -->
     <li class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -107,15 +91,15 @@ echo '<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-
             </a>
             <a class="dropdown-item text-center small text-gray-500" href="#">Voir tous les messages</a>
         </div>
-    </li>*/
+    </li>
 
-    echo '<div class="topbar-divider d-none d-sm-block"></div>';
+    <div class="topbar-divider d-none d-sm-block"></div>*/
 
     echo '<!-- Nav Item - User Information -->
     <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">'.$_COOKIE['matricule']." ".$_COOKIE['grade']. " ".$_COOKIE['firstname']. " ".$_COOKIE['name'].'</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">'.$_COOKIE['grade']." ".$_COOKIE['firstname']. " ".$_COOKIE['name'].'</span>
             <img class="img-profile rounded-circle"
                 src="img/undraw_profile.svg">
         </a>

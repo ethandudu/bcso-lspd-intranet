@@ -8,12 +8,8 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-$req = $bdd -> prepare("SELECT * FROM wanted_bcso WHERE ID = ?");
-$req -> execute(array($_GET['id']));
-$wanted = $req -> fetch();
-
-$reqcivil = $bdd -> prepare("SELECT * FROM civils_bcso WHERE ID = ?");
-$reqcivil -> execute(array($wanted['civilid']));
+$reqcivil = $bdd -> prepare("SELECT * FROM civils_lspd WHERE ID = ?");
+$reqcivil -> execute(array($_GET['id']));
 $civil = $reqcivil -> fetch();
 
 $name = $civil['name'];
@@ -32,7 +28,7 @@ class PDF extends FPDF
 		$name = $GLOBALS['name'];
 		$firstname = $GLOBALS['firstname'];
 		// Logo : 8 >position à gauche du document (en mm), 2 >position en haut du document, 80 >largeur de l'image en mm). La hauteur est calculée automatiquement.
-		$this->Image('assets/logo_bcso2.png',8,2);
+		$this->Image('assets/logo_lspd2.png',8,2);
 		// Saut de ligne 20 mm
 		$this->Ln(20);
 
@@ -43,7 +39,7 @@ class PDF extends FPDF
  		// position du coin supérieur gauche par rapport à la marge gauche (mm)
 		$this->SetX(60);
 		// Texte : 60 >largeur ligne, 8 >hauteur ligne. Premier 0 >pas de bordure, 1 >retour à la ligneensuite, C >centrer texte, 1> couleur de fond ok	
-		$this->Cell(80,8,"Wanted $firstname $name ",0,1,'C',1);
+		$this->Cell(80,8,"Dossier de $firstname $name ",0,1,'C',1);
 		// Saut de ligne 10 mm
 		$this->Ln(10);		
 	}
@@ -54,7 +50,7 @@ class PDF extends FPDF
 		// Police Arial italique 8
 		$this->SetFont('Helvetica','I',9);
         //footer
-        $this->Cell(0,10,'Wanted '.$GLOBALS['firstname'].' '.$GLOBALS['name'].' - '.date('d/m/Y'),0,0,'L');
+        $this->Cell(0,10,'Dossier de '.$GLOBALS['firstname'].' '.$GLOBALS['name'].' - '.date('d/m/Y'),0,0,'L');
 		// Numéro de page, centré (C)
 		$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 	}
@@ -80,10 +76,10 @@ $pdf->SetFont('Helvetica','B',11);
 // couleur de fond de la cellule : gris clair
 $pdf->setFillColor(230,230,230);
 // Cellule avec les données du sous-titre sur 2 lignes, pas de bordure mais couleur de fond grise
-$datepublish = $wanted['datetime'];
-$datepublish = date('d/m/Y H:i', strtotime($datepublish));
+$datepublish = date("d/m/Y à H:i");
 $officer = $_COOKIE['firstname']. " " .$_COOKIE['name'];
-$pdf->Cell(75,6,utf8_decode("Publié le $datepublish"),0,1,'L',1);			
+$pdf->Cell(75,6,utf8_decode("Edité le $datepublish"),0,1,'L',1);		
+$pdf->Cell(75,6,"Par $officer",0,1,'L',1);				
 $pdf->Ln(10); // saut de ligne 10mm	
 
 
@@ -97,15 +93,13 @@ $pdf->Cell(43,6,utf8_decode("Date de naissance :"),0,0,'L',0);
 $datetimelocal = new DateTime($civil['birthdate']);
 $birthdate = $datetimelocal->format('d/m/Y');
 $pdf->Cell(40,6,utf8_decode($birthdate),0,1,'L',0);
-$pdf->Cell(43,6,utf8_decode("Adresse :"),0,0,'L',0);
-$pdf->Cell(40,6,utf8_decode($civil['address']),0,1,'L',0);
+$pdf->Cell(43,6,utf8_decode("Téléphone :"),0,0,'L',0);
+$pdf->Cell(40,6,utf8_decode($civil['tel']),0,1,'L',0);
 $pdf->Cell(43,6,utf8_decode("Note :"),0,0,'L',0);
 if ($civil['note'] == "") {
 	$civil['note'] = "Aucune note";
 }
 $pdf->Cell(40,6,utf8_decode($civil['note']),0,1,'L',0);
-$pdf->Cell(43,6,utf8_decode("Motif :"),0,0,'L',0);
-$pdf->Cell(40,6,utf8_decode($wanted['reason']),0,1,'L',0);
 
 $pdf->Ln(10); // saut de ligne 10mm
 $pdf->SetFont('Helvetica','B',11);
@@ -141,12 +135,7 @@ try {
 
 
 
-$pdf->Output('wanted.pdf','I'); // affichage à l'écran
+$pdf->Output('dossier.pdf','I'); // affichage à l'écran
 // Ou export sur le serveur
-
-if ($_GET['action']=="webhook"){
-	$pdf->Output('F', 'wanted.pdf'); // export sur le serveur
-}else{
-	$pdf->Output('wanted.pdf','I'); // affichage à l'écran
-}
+// $pdf->Output('F', '../test.pdf');
 ?>

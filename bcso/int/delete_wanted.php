@@ -7,25 +7,19 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include('functions/loginverif.php');
-//permission test
-if (($_COOKIE['grade']=="Commandant")){
 
-}else {
-    header('Location: wanted.php?error=permission');
-}
-
-$req2 = $bdd->prepare('SELECT civilid FROM wanted_lspd WHERE ID = ?');
+$req2 = $bdd->prepare('SELECT civilid FROM wanted_bcso WHERE ID = ?');
 $req2->execute(array($_GET['id']));
 $req2 = $req2->fetch();
 
-$req3 = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+$req3 = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
 $req3->execute(array($req2['civilid']));
 $req3 = $req3->fetch();
 
 if (isset($_POST['delete-confirmation'])) {
     $color = "2e59d9";
     $id = $_GET['id'];
-    $req = $bdd->prepare('DELETE FROM wanted_lspd WHERE ID = ?');
+    $req = $bdd->prepare('DELETE FROM wanted_bcso WHERE ID = ?');
     $req->execute(array($id));
     header("Location: wanted.php");
 }
@@ -43,7 +37,7 @@ $namefirstname = $req3['name'] . ' ' . $req3['firstname'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Wanted - LSPD</title>
+    <title>Wanted - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -58,7 +52,7 @@ $namefirstname = $req3['name'] . ' ' . $req3['firstname'];
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -68,9 +62,9 @@ $namefirstname = $req3['name'] . ' ' . $req3['firstname'];
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -130,7 +124,7 @@ $namefirstname = $req3['name'] . ' ' . $req3['firstname'];
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2022</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2022</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

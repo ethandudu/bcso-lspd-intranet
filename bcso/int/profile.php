@@ -7,12 +7,12 @@ include('functions/loginverif.php');
 # save note textarea to database
 if (isset($_POST['submit']) && $_POST['submit'] == 'Modifier') {
     if ($_POST['newpassword'] == $_POST['newpassword2']){
-        $req = $bdd->prepare("SELECT count(ID) FROM members_lspd WHERE ID = ? AND password = ?");
+        $req = $bdd->prepare("SELECT count(ID) FROM members_bcso WHERE ID = ? AND password = ?");
         $req->execute(array($_COOKIE['id'], hash('sha256', $_POST['oldpassword'])));
         $result = $req->fetch();
 
         if ($result[0] == 1) {
-            $req = $bdd->prepare("UPDATE members_lspd SET password = ? WHERE ID = ?");
+            $req = $bdd->prepare("UPDATE members_bcso SET password = ? WHERE ID = ?");
             $req->execute(array(hash('sha256', $_POST['newpassword']), $_COOKIE['id']));
             $messagepass = 1;
         } else {
@@ -24,14 +24,14 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Modifier') {
 }
 
 if (isset($_POST['submittel'])){
-    $req = $bdd->prepare("UPDATE members_lspd SET tel = ? WHERE ID = ?");
+    $req = $bdd->prepare("UPDATE members_bcso SET tel = ? WHERE ID = ?");
     $req->execute(array($_POST['tel'], $_COOKIE['id']));
     $messagetel = 1;
 }
-$data = $bdd->prepare("SELECT * FROM members_lspd WHERE ID = ?");
+$data = $bdd->prepare("SELECT * FROM members_bcso WHERE ID = ?");
 $data->execute(array($_COOKIE['id']));
 $member = $data->fetch();
-$vehicle = $bdd->prepare("SELECT * FROM vehicles_lspd WHERE owner = ?");
+$vehicle = $bdd->prepare("SELECT * FROM vehicles_bcso WHERE owner = ?");
 $vehicle->execute(array($_COOKIE['id']));
 $vehicle = $vehicle->fetch();
 ?>
@@ -45,7 +45,7 @@ $vehicle = $vehicle->fetch();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Profil - LSPD</title>
+    <title>Profil - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -59,7 +59,7 @@ $vehicle = $vehicle->fetch();
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -69,9 +69,9 @@ $vehicle = $vehicle->fetch();
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -128,7 +128,7 @@ $vehicle = $vehicle->fetch();
                                             <label for="grade">Grade</label>
                                             <input type="text" class="form-control" id="grade" name="grade" value="<?php echo $member['grade']?>" disabled>
                                             <label for="division">Division</label>
-                                            <input type="text" class="form-control" id="division1" name="division1" value="<?php echo $member['division']?>" disabled>
+                                            <input type="text" class="form-control" id="division" name="division" value="<?php echo $member['division']?>" disabled>
                                             <label for="tel">Téléphone</label>
                                             <input type="tel" class="form-control" id="tel" name="tel" placeholder="(555) 123-4567" value="<?php echo $member['tel']?>"required>
                                                 <br>
@@ -200,41 +200,71 @@ $vehicle = $vehicle->fetch();
                                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>PPA</th>
-                                            <th>Stage conduite sécurité</th>
-                                            <th>Négociateur</th>
-                                            <th>Dispatcheur</th>
-                                            <th>Recruteur</th>
+                                            <th>PPA 1</th>
+                                            <th>PPA 2</th>
+                                            <th>Co-pilote</th>
+                                            <th>Pilote</th>
+                                            <th>B.L.S.</th>
+                                            <th>B.E.</th>
+                                            <th>S.A.H.P. Mary</th>
+                                            <th>S.A.H.P. V.I.R.</th>
+                                            <th>P.R.</th>
+                                            <th>S.W.A.T.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- get infos from database -->
                                         <?php
-                                        $req = $bdd->prepare('SELECT ppa, conduite, negociateur, dispatcheur, recruteur FROM members_lspd WHERE ID = ?');
+                                        $req = $bdd->prepare('SELECT ppa1, ppa2, copilote, pilote, bls, be, sahpmary, sahpvir, pr, swat FROM members_bcso WHERE ID = ?');
                                         $req->execute(array($_COOKIE['id']));
                                         while ($data = $req->fetch()) {
                                             echo '<tr>';
-                                            if ($data['ppa'] == 1) {
+                                            if ($data['ppa1'] == 1) {
                                                 echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
                                             }
-                                            if ($data['conduite'] == 1) {
+                                            if ($data['ppa2'] == 1) {
                                                 echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
                                             }
-                                            if ($data['negociateur'] == 1) {
+                                            if ($data['copilote'] == 1) {
                                                 echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
                                             }
-                                            if ($data['dispatcheur'] == 1) {
+                                            if ($data['pilote'] == 1) {
                                                 echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
                                             }
-                                            if ($data['recruteur'] == 1) {
+                                            if ($data['bls'] == 1) {
+                                                echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['be'] == 1) {
+                                                echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['sahpmary'] == 1) {
+                                                echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['sahpvir'] == 1) {
+                                                echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['pr'] == 1) {
+                                                echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['swat'] == 1) {
                                                 echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
@@ -264,7 +294,7 @@ $vehicle = $vehicle->fetch();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

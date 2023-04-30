@@ -11,7 +11,7 @@ include('config.php');
 $hostname = "api.ethanduault.fr";
 $username = "bcso";
 $password = "bcso";
-$namebase = "lspd";
+$namebase = "bcso";
 
 $backup_file = "/tmp/backup-" . date("Y-m-d-H-i-s") . '.sql';
 $command = "mysqldump --opt -h $hostname -u $username -p$password $namebase > $backup_file";

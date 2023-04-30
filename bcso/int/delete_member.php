@@ -10,12 +10,12 @@ include('functions/loginverif.php');
 
 if (isset($_POST['delete-confirmation'])) {
     $id = $_GET['id'];
-    $req = $bdd->prepare('DELETE FROM members_lspd WHERE ID = ?');
+    $req = $bdd->prepare('DELETE FROM members_bcso WHERE ID = ?');
     $req->execute(array($id));
     header("Location: list_members.php");
 }
 
-$req2 = $bdd->prepare('SELECT * FROM members_lspd WHERE ID = ?');
+$req2 = $bdd->prepare('SELECT * FROM members_bcso WHERE ID = ?');
 $req2->execute(array($_GET['id']));
 $req2 = $req2->fetch();
 
@@ -32,7 +32,7 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Membres - LSPD</title>
+    <title>Membres - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -47,7 +47,7 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -57,9 +57,9 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -119,7 +119,7 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2022</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2022</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

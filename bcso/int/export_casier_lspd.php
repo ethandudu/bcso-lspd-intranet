@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-$reqcivil = $bdd -> prepare("SELECT * FROM civils_bcso WHERE ID = ?");
+$reqcivil = $bdd -> prepare("SELECT * FROM civils_lspd WHERE ID = ?");
 $reqcivil -> execute(array($_GET['id']));
 $civil = $reqcivil -> fetch();
 
@@ -82,13 +82,13 @@ entete_table($position_entete);
 
 
 $position_detail = 78; // Position ordonnée = $position_entete+hauteur de la cellule d'en-tête (60+8)
-$casiers = $bdd -> prepare("SELECT * FROM casiers_bcso WHERE civilid = ?");
+$casiers = $bdd -> prepare("SELECT * FROM casiers_lspd WHERE civilid = ?");
 $casiers -> execute(array($_GET['id']));
 $casiers = $casiers -> fetchAll();
 $pdf->SetWidths(array(80,50,20,35));
 
 while ($casier = array_shift($casiers)) {
-	$reqofficer = $bdd -> prepare("SELECT name FROM members_bcso WHERE ID = ?");
+	$reqofficer = $bdd -> prepare("SELECT name, firstname FROM members_lspd WHERE ID = ?");
 	$reqofficer -> execute(array($casier['officier']));
 	$officer = $reqofficer -> fetch();
 	$officer = $officer['name'];

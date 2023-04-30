@@ -10,7 +10,7 @@ if ($type == "add"){
     $officier = $_POST['officier'];
     $datetime = $_POST['datetime'];
     $plainte = $_POST['plainte'];
-    $req = $bdd->prepare('INSERT INTO complaints (datetime, req, violator, officier, subject, object) VALUES (?, ?, ?, ?, ?, ?)');
+    $req = $bdd->prepare('INSERT INTO complaints_bcso (datetime, req, violator, officier, subject, object) VALUES(?, ?, ?, ?, ?, ?)');
     $req->execute(array($datetime, $reqe, $acc, $officier, $subject, $plainte));
     echo "success";
 }

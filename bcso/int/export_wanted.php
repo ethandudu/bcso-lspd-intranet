@@ -8,11 +8,11 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-$req = $bdd -> prepare("SELECT * FROM wanted_lspd WHERE ID = ?");
+$req = $bdd -> prepare("SELECT * FROM wanted_bcso WHERE ID = ?");
 $req -> execute(array($_GET['id']));
 $wanted = $req -> fetch();
 
-$reqcivil = $bdd -> prepare("SELECT * FROM civils_lspd WHERE ID = ?");
+$reqcivil = $bdd -> prepare("SELECT * FROM civils_bcso WHERE ID = ?");
 $reqcivil -> execute(array($wanted['civilid']));
 $civil = $reqcivil -> fetch();
 
@@ -32,7 +32,7 @@ class PDF extends FPDF
 		$name = $GLOBALS['name'];
 		$firstname = $GLOBALS['firstname'];
 		// Logo : 8 >position à gauche du document (en mm), 2 >position en haut du document, 80 >largeur de l'image en mm). La hauteur est calculée automatiquement.
-		$this->Image('assets/logo_lspd2.png',8,2);
+		$this->Image('assets/logo_bcso2.png',8,2);
 		// Saut de ligne 20 mm
 		$this->Ln(20);
 

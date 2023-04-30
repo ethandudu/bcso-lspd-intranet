@@ -1,10 +1,6 @@
 <?php
-$reqadmin = $bdd->prepare('SELECT recruteur FROM members_lspd WHERE ID = ?');
-$reqadmin->execute(array($_COOKIE['id']));
-$donnees = $reqadmin->fetch();
-$recruteur = $donnees['recruteur'];
 
-if (($_COOKIE['grade']=="Commandant") OR ($_COOKIE['grade']=="Capitaine") OR ($_COOKIE['grade']=="Lieutenant") OR ($_COOKIE['grade']=="Sergent Chef") OR ($_COOKIE['userconnect']=="tyzemike")){
+if (($_COOKIE['grade']=="Sheriff") OR ($_COOKIE['grade']=="Sheriff Adjoint") OR ($_COOKIE['grade']=="Major") OR ($_COOKIE['grade']=="Lieutenant") OR ($_COOKIE['userconnect']=="johncopper")){
 
 
     echo '<div class="sidebar-heading">';
@@ -16,14 +12,11 @@ if (($_COOKIE['grade']=="Commandant") OR ($_COOKIE['grade']=="Capitaine") OR ($_
     <i class="fas fa-fw fa-car"></i>
     <span>Véhicules</span></a>';
     echo '</li>';
-
-    
-
-
-
-    echo '<li class="nav-item"><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1NSgF5BnLNBfqYgThPw6NXFWEoFVhKfSZ6BqyP2ivprk/edit?usp=sharing" target="_blank">
-        <i class="fas fa-fw fa-graduation-cap"></i>
-        <span>Formations</span></a></li>';
+    echo '<li class="nav-item">';
+    echo '<a class="nav-link" href="formations.php">
+    <i class="fas fa-fw fa-graduation-cap"></i>
+    <span>Formations</span></a>';
+    echo '</li>';
 
     echo '<li class="nav-item">';
         echo '<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin2"';
@@ -44,10 +37,5 @@ if (($_COOKIE['grade']=="Commandant") OR ($_COOKIE['grade']=="Capitaine") OR ($_
     <span>Paramètres</span></a>';
     echo '</li>';
     echo '<hr class="sidebar-divider d-none d-md-block">';
-} elseif ($recruteur == 1){
-    echo '<div class="sidebar-heading">Administration</div>';
-    echo '<li class="nav-item"><a class="nav-link" href="formations.php">
-        <i class="fas fa-fw fa-graduation-cap"></i>
-        <span>Formations</span></a></li>';
 }
 ?>

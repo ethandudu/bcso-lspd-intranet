@@ -20,7 +20,7 @@ include('functions/loginverif.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Saisies - LSPD</title>
+    <title>Saisies - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@ include('functions/loginverif.php');
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -45,9 +45,9 @@ include('functions/loginverif.php');
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -90,13 +90,13 @@ include('functions/loginverif.php');
                                     <h6 class="m-0 font-weight-bold text-primary">Drogue</h6>
                                 </div>
                                 <ul>
-                                    <li>01 à 10 : Pochon de Weed</li>
-                                    <li>11 à 20 : Pochon de Cocaïne</li>
-                                    <li>21 à 30 : Pochon de Meth</li>
-                                    <li>31 à 35 : Autres drogues</li>
-                                    <li>36 à 37 : Tortue</li>
-                                    <li>38 à 39 : Aileron de requin</li>
-                                    <li>40 à 41 : Chair d'espadon</li>
+                                    <li>1501 à 1510 : Pochon de Weed</li>
+                                    <li>1511 à 1520 : Pochon de Cocaïne</li>
+                                    <li>1521 à 1530 : Pochon de Meth</li>
+                                    <li>1531 à 1535 : Autres drogues</li>
+                                    <li>1536 à 1537 : Tortue</li>
+                                    <li>1538 à 1539 : Aileron de requin</li>
+                                    <li>1540 à 1541 : Chair d'espadon</li>
                                 </ul>
                             </div>
                             <div class="card shadow mb-4">
@@ -104,10 +104,10 @@ include('functions/loginverif.php');
                                     <h6 class="m-0 font-weight-bold text-primary">Communication</h6>
                                 </div>
                                 <ul>
-                                    <li>42 : Téléphone</li>
-                                    <li>43 à 44 : Radio</li>
-                                    <li>45 à 47 : Braquage</li>
-                                    <li>48 à 49 : Autres saisies</li>
+                                    <li>1542 : Téléphone</li>
+                                    <li>1543 à 1544 : Radio</li>
+                                    <li>1545 à 1547 : Braquage</li>
+                                    <li>1548 à 1549 : Autres saisies</li>
                                 </ul>
                             </div>
                             <div class="card shadow mb-4">
@@ -115,14 +115,25 @@ include('functions/loginverif.php');
                                     <h6 class="m-0 font-weight-bold text-primary">Armes Blanches</h6>
                                 </div>
                                 <ul>
-                                    <li>50 : Cran d'arrêt</li>
-                                    <li>51 : Machette</li>
-                                    <li>52 : Couteau</li>
-                                    <li>53 : Dague</li>
-                                    <li>54 : Poing Américain</li>
-                                    <li>55 : Batte</li>
-                                    <li>56 : Queue de billard</li>
-                                    <li>57 à 59 : Autres armes blanches</li>
+                                    <li>1550 : Cran d'arrêt</li>
+                                    <li>1551 : Machette</li>
+                                    <li>1552 : Couteau</li>
+                                    <li>1553 : Dague</li>
+                                    <li>1554 : Poing Américain</li>
+                                    <li>1555 : Batte</li>
+                                    <li>1556 : Queue de billard</li>
+                                    <li>1557 à 1559 : Autres armes blanches</li>
+                                </ul>
+                            </div>
+                            <div class="card shadow mb-4">
+                               <div class="card-header py-3">
+                                   <h6 class="m-0 font-weight-bold text-primary">Divisions</h6>
+                               </div>
+                               <ul>
+                                    <li>1701 : S.W.A.T.</li>
+                                    <li>1702 : S.A.H.P.</li>
+                                    <li>1703 : B.E.</li>
+                                    <li>1704 : Henry</li>
                                 </ul>
                             </div>
                         </div>
@@ -133,24 +144,24 @@ include('functions/loginverif.php');
                                     <h6 class="m-0 font-weight-bold text-primary">Armes à Feu</h6>
                                 </div>
                                 <ul>
-                                    <li>60 : Pistolet (Légal)</li>
-                                    <li>61 : Pistolet céramique (Légal)</li>
-                                    <li>62 : Pistolet SNS (Légal)</li>
-                                    <li>63 : Pistolet Lourd (Illégal)</li>
-                                    <li>64 : Pistolet .50 (Illégal)</li>
-                                    <li>65 : Micro SMG (Illégal)</li>
-                                    <li>66 : Machine Pistol (Illégal)</li>
-                                    <li>67 : Combat PDW (Illégal)</li>
-                                    <li>68 : Assaut SMG (Illégal)</li>
-                                    <li>69 : Bullpup Rifle (Illégal)</li>
-                                    <li>70 : Assaut Rifle (Illégal)</li>
-                                    <li>71 : Carabine Rifle (Illégal)</li>
-                                    <li>72 : Fusil à pompe de combat (Illégal)</li>
-                                    <li>73 : Sawn off shotgun (Illégal)</li>
-                                    <li>74 : Fusil à pompe (Illégal)</li>
-                                    <li>75 : Mini SMG (Illégal)</li>
-                                    <li>76 : SMG (Illégal - Arme LSPD)</li>
-                                    <li>77 : Gillets pare-balle</li>
+                                    <li>1560 : Pistolet</li>
+                                    <li>1561 : Pistolet céramique</li>
+                                    <li>1562 : Pistolet SNS</li>
+                                    <li>1563 : Pistolet Lourd</li>
+                                    <li>1564 : Pistolet .50</li>
+                                    <li>1565 : Micro SMG</li>
+                                    <li>1566 : Machine Pistol</li>
+                                    <li>1567 : Combat PDW</li>
+                                    <li>1568 : Assaut SMG</li>
+                                    <li>1569 : Bullpup Rifle</li>
+                                    <li>1570 : Assaut Rifle</li>
+                                    <li>1571 : Carabine Rifle</li>
+                                    <li>1572 : Fusil à pompe de combat</li>
+                                    <li>1573 : Sawn off shotgun</li>
+                                    <li>1574 : Fusil à pompe</li>
+                                    <li>1575 : Mini SMG</li>
+                                    <li>1576 : SMG</li>
+                                    <li>1577 : Compact Rifle</li>
                                 </ul>
                             </div>
                              <div class="card shadow mb-4">
@@ -158,12 +169,12 @@ include('functions/loginverif.php');
                                     <h6 class="m-0 font-weight-bold text-primary">Munitions</h6>
                                 </div>
                                 <ul>
-                                    <li>80 : Cal. 50 AE</li>
-                                    <li>81 : Cal. 45 ACP</li>
-                                    <li>82 : Cal. 7.62mm</li>
-                                    <li>83 : Cal. 12 Gauge</li>
-                                    <li>84 : Cal. 9mm</li>
-                                    <li>85 : Cal. 5.56mm</li>
+                                    <li>1580 : Cal. 50 AE</li>
+                                    <li>1581 : Cal. 45 ACP</li>
+                                    <li>1582 : Cal. 7.62mm</li>
+                                    <li>1583 : Cal. 12 Gauge</li>
+                                    <li>1584 : Cal. 9mm</li>
+                                    <li>1585 : Cal. 5.56mm</li>
                                 </ul>
                             </div>
                             <div class="card shadow mb-4">
@@ -171,10 +182,10 @@ include('functions/loginverif.php');
                                    <h6 class="m-0 font-weight-bold text-primary">Autres</h6>
                                </div>
                                <ul>
-                                    <li>100 : Argent Sale</li>
-                                    <li>201-202 : Nourritures</li>
-                                    <li>203-204 : Boisson</li>
-                                    <li>205 : Kits de réparation</li>
+                                    <li>1599 : Papiers d'identité</li>
+                                    <li>1600 : Argent sale</li>
+                                    <li>1601 : Commun BCSO</li>
+                                    <li>1602 : Boissons BCSO</li>
                                 </ul>
                             </div>
                         </div>
@@ -190,7 +201,7 @@ include('functions/loginverif.php');
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

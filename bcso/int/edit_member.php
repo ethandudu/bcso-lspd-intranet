@@ -16,7 +16,7 @@ if (isset($_POST['reset'])) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
     $password = hash('sha256', $randomString);
-    $req = $bdd->prepare('UPDATE members_lspd SET password = ? WHERE ID = ?');
+    $req = $bdd->prepare('UPDATE members_bcso SET password = ? WHERE ID = ?');
     $req->execute(array($password, $_GET['id']));
     $stat = "Identifiants pour le compte de " . $name . " " . $firstname . " : " . $username . " / " . $randomString;
 }
@@ -28,35 +28,14 @@ if (isset($_POST['submit'])) {
     $grade = $_POST['grade'];
     $tel = $_POST['phone'];
     $division = $_POST['division'];
-    $matricule = $_POST['matricule'];
     $id = $_GET['id'];
 
-    if ($grade == "Commandant"){
-        $gradevalue = 9;
-    }elseif ($grade == "Capitaine"){
-        $gradevalue = 8;
-    }elseif ($grade == "Lieutenant"){
-        $gradevalue = 7;
-    }elseif ($grade == "Sergent-Chef"){
-        $gradevalue = 6;
-    }elseif ($grade == "Sergent"){
-        $gradevalue = 5;
-    }elseif ($grade == "Officier III"){
-        $gradevalue = 4;
-    }elseif ($grade == "Officier II"){
-        $gradevalue = 3;
-    }elseif ($grade == "Officier I"){
-        $gradevalue = 2;
-    }elseif ($grade == "Cadet"){
-        $gradevalue = 1;
-    }
-
-    $req = $bdd->prepare('UPDATE members_lspd SET matricule = ?, name = ?, firstname = ?, grade = ?, gradevalue = ?, tel = ?, division = ? WHERE ID = ?');
-    $req->execute(array($matricule, $name, $firstname, $grade, $gradevalue, $tel, $division, $id));
+    $req = $bdd->prepare('UPDATE members_bcso SET name = ?, firstname = ?, grade = ?, tel = ?, division = ? WHERE ID = ?');
+    $req->execute(array($name, $firstname, $grade, $tel, $division, $id));
     header("Location: list_members.php");
 }
 
-$req = $bdd->prepare('SELECT * FROM members_lspd WHERE ID = ?');
+$req = $bdd->prepare('SELECT * FROM members_bcso WHERE ID = ?');
 $req->execute(array($_GET['id']));
 $req = $req->fetch();
 
@@ -73,7 +52,7 @@ $req = $req->fetch();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Agents - LSPD</title>
+    <title>Agents - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -96,7 +75,7 @@ $req = $req->fetch();
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -106,9 +85,9 @@ $req = $req->fetch();
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -152,10 +131,6 @@ $req = $req->fetch();
                         <form method='POST'>
                         <div class="card-body">
                             <!-- show the informations about the person stored in the database -->
-                            <label for="matricule" class="col-sm-2 col-form-label">Matricule</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="matricule" name="matricule" placeholder="Matricule" value="<?php  echo $req['matricule']?>" required>
-                            </div>
                             <label for="name" class="col-sm-2 col-form-label">Nom</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Nom Prénom" value="<?php  echo $req['name']?>" required>
@@ -168,7 +143,7 @@ $req = $req->fetch();
                             <div class="col-sm-10">
                                 <select class="form-control" id="grade" name="grade" required>
                                     <?php
-                                    $ranklist = ["Commandant", "Capitaine", "Lieutenant", "Sergent Chef", "Sergent", "Officier III", "Officier II", "Officier I", "Cadet"];
+                                    $ranklist = ["Sheriff", "Sheriff Adjoint", "Major", "Lieutenant", "Sergent", "Senior Deputy", "Deputy I", "Deputy II", "Junior"];
                                     foreach ($ranklist as $rank) {
                                         if ($rank == $req['grade']) {
                                             echo "<option value='$rank' selected>$rank</option>";
@@ -187,7 +162,7 @@ $req = $req->fetch();
                             <label for="division" class="col-sm-2 col-form-label">Division</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="division" name="division" required>
-                                    <?php $divisionlist = ["Aucune", "SWAT", "SAHP", "Henry", "DOA"];
+                                    <?php $divisionlist = ["Aucune", "S.W.A.T.", "S.A.H.P.", "B.E.", "Henry"];
                                     foreach ($divisionlist as $division) {
                                         if ($division == $req['division']) {
                                             echo "<option value='$division' selected>$division</option>";
@@ -197,7 +172,7 @@ $req = $req->fetch();
                                     }
                                     ?>
                                 </select>
-                            </div>                
+                            </div>                            
                         </div>
                         <div class="card-footer">
                             <a href="list_members.php" class="btn btn-secondary">Retour</a>
@@ -221,7 +196,7 @@ $req = $req->fetch();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

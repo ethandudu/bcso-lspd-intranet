@@ -18,7 +18,7 @@ error_reporting(E_ALL);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Maintenance - LSPD</title>
+    <title>Maintenance - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@ error_reporting(E_ALL);
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -70,7 +70,7 @@ error_reporting(E_ALL);
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2022</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2022</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ include('functions/loginverif.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Casiers - LSPD</title>
+    <title>Casiers - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -30,7 +30,7 @@ include('functions/loginverif.php');
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -40,9 +40,9 @@ include('functions/loginverif.php');
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -79,13 +79,7 @@ include('functions/loginverif.php');
                     <p><label>Rechercher:
                             <input id="myInput" type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable" onkeyup="myFunction()">
                         </label></p>
-                        <?php
-                        if (isset($_GET['error']) AND $_GET['error'] == "permission") {
-                            echo '<div class="alert alert-danger" role="alert">
-                            Vous n\'avez pas les droits pour accéder à cette page.
-                          </div>';
-                        }
-                    ?>
+                    
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -100,7 +94,6 @@ include('functions/loginverif.php');
                                             <th>Nom Prénom</th>
                                             <th>Infraction</th>
                                             <th>Sanction</th>
-                                            <th>Saisie</th>
                                             <th>Officier</th>
                                             <th>Date</th>
                                             <th>Note</th>
@@ -112,7 +105,6 @@ include('functions/loginverif.php');
                                             <th>Nom Prénom</th>
                                             <th>Infraction</th>
                                             <th>Sanction</th>
-                                            <th>Saisie</th>
                                             <th>Officier</th>
                                             <th>Date</th>
                                             <th>Note</th>
@@ -122,21 +114,20 @@ include('functions/loginverif.php');
                                     <tbody>
                                         <!-- get infos from database -->
                                         <?php
-                                        $req = $bdd->prepare('SELECT * FROM casiers_lspd ORDER BY datetime DESC');
+                                        $req = $bdd->prepare('SELECT * FROM casiers_bcso ORDER BY datetime DESC');
                                         $req->execute();
                                         while ($data = $req->fetch()) {
-                                            $req2 = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+                                            $req2 = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
                                             $req2->execute(array($data['civilid']));
                                             $data2 = $req2->fetch();
                                             echo '<tr>';
                                             echo '<td>' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
                                             echo '<td>' . $data['crime'] . '</td>';
                                             echo '<td>' . $data['sanction'] . '</td>';
-                                            echo '<td>' . $data['saisie'] . '</td>';
-                                            $req2 = $bdd->prepare('SELECT * FROM members_lspd WHERE ID = ?');
+                                            $req2 = $bdd->prepare('SELECT * FROM members_bcso WHERE ID = ?');
                                             $req2->execute(array($data['officier']));
                                             $data2 = $req2->fetch();
-                                            echo '<td>'. $data2['matricule']. ' ' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
+                                            echo '<td>' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
                                             #convert $data['datetime'] to french datime format
                                             $date2 = date("d/m/Y H:i", strtotime($data['datetime']));
                                             echo '<td>' . $date2 . '</td>';
@@ -162,7 +153,7 @@ include('functions/loginverif.php');
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

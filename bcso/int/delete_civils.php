@@ -7,30 +7,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include('functions/loginverif.php');
-
-//permission test
-if (($_COOKIE['grade']=="Commandant")){
-
-}else {
-    header('Location: civils.php?error=permission');
-}
-
-$req = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+$req = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
 $req->execute(array($_GET['id']));
 $req = $req->fetch();
 
 if (isset($_POST['delete-confirmation'])) {
     $id = $_GET['id'];
-    $req = $bdd->prepare('DELETE FROM wanted_lspd WHERE civilid = ?');
-    $req->execute(array($id));
-    $req = $bdd->prepare('DELETE FROM casiers_lspd WHERE civilid = ?');
-    $req->execute(array($id));
-    $req = $bdd->prepare('DELETE FROM civils_lspd WHERE ID = ?');
+    $req = $bdd->prepare('DELETE FROM civils_bcso WHERE ID = ?');
     $req->execute(array($id));
     header("Location: civils.php");
 }
 
-$req2 = $bdd->prepare('SELECT name, firstname FROM civils_lspd WHERE ID = ?');
+$req2 = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
 $req2->execute(array($_GET['id']));
 $req2 = $req2->fetch();
 
@@ -47,7 +35,7 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Civils - LSPD</title>
+    <title>Civils - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -62,7 +50,7 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -72,9 +60,9 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -116,7 +104,6 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
                         <div class="card-body">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Voulez-vous vraiment supprimer le profil de <?php echo $namefirstname ?> ?</h1>
-                                <h2>Attention ! Cette action va également supprimer les casiers judiciaires et les wanted de ce civil.</h2>
                             </div>
                             <form class="user" method="post" name="delete-confirm">
                                 <input type="submit" class="btn btn-danger btn-user btn-block" value="Supprimer" name="delete-confirmation">
@@ -135,7 +122,7 @@ $namefirstname = $req2['name'] . ' ' . $req2['firstname'];
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2022</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2022</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-if (($_COOKIE['grade']=="Commandant") OR ($_COOKIE['grade']=="Capitaine") OR ($_COOKIE['grade']=="Lieutenant") OR ($_COOKIE['grade']=="Sergent Chef") OR ($_COOKIE['userconnect']=="tyzemike") OR ($_COOKIE['division']=="DOA")){
+if (($_COOKIE['grade']=="Sheriff") OR ($_COOKIE['grade']=="Sheriff Adjoint") OR ($_COOKIE['grade']=="Major") OR ($_COOKIE['grade']=="Lieutenant") OR ($_COOKIE['userconnect']=="johncopper") OR ($_COOKIE['division']=="B.E.")){
 
 
     echo '<div class="sidebar-heading">';

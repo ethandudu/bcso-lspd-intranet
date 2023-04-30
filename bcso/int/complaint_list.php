@@ -19,7 +19,7 @@ include('functions/loginverif.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Plaintes - LSPD</title>
+    <title>Plaintes - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@ include('functions/loginverif.php');
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -45,9 +45,9 @@ include('functions/loginverif.php');
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -111,7 +111,7 @@ include('functions/loginverif.php');
                                         <label for="officier">Officier</label>
                                         <select class="form-control" id="officier" name="officier" required>
                                             <?php
-                                                $req = $bdd->prepare("SELECT ID, name, firstname FROM members_lspd ORDER BY name ASC");
+                                                $req = $bdd->prepare("SELECT ID, name, firstname FROM members_bcso ORDER BY name ASC");
                                                 $req->execute();
                                                 while($data = $req->fetch()){
                                                 echo '<option value="'.$data['ID'].'">'.$data['name'].' '.$data['firstname'].'</option>';
@@ -180,14 +180,14 @@ include('functions/loginverif.php');
                                     <tbody>
                                         <!-- get infos from database -->
                                         <?php
-                                        $req = $bdd->prepare('SELECT * FROM complaints_lspd ORDER BY ID DESC');
+                                        $req = $bdd->prepare('SELECT * FROM complaints_bcso ORDER BY ID DESC');
                                         $req->execute();
                                         while ($data = $req->fetch()) {
                                             echo '<tr>';
                                             echo '<td>' . $data['req'] . '</td>';
                                             echo '<td>' . $data['violator'] . '</td>';
                                             echo '<td>'.$data['subject']. '</td>';
-                                            $data2 = $bdd->prepare('SELECT name, firstname FROM members_lspd WHERE ID = ?');
+                                            $data2 = $bdd->prepare('SELECT name, firstname FROM members_bcso WHERE ID = ?');
                                             $data2->execute(array($data['officier']));
                                             $data2 = $data2->fetch();
                                             $officier = $data2['firstname']. ' ' . $data2['name'];
@@ -243,7 +243,7 @@ include('functions/loginverif.php');
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

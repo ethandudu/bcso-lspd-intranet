@@ -7,7 +7,7 @@ if ($type == "add"){
 
     $agent = $_POST['agent'];
     $formation = $_POST['formation'];
-    $req = $bdd->prepare('UPDATE members_lspd SET '.$formation.' = 1 WHERE ID = ?');
+    $req = $bdd->prepare('UPDATE members_bcso SET '.$formation.' = 1 WHERE ID = ?');
     $req->execute(array($agent));
     echo "success";
 }
@@ -15,7 +15,7 @@ if ($type == "add"){
 if ($type == "delete"){
     $agent = $_POST['agent'];
     $formation = $_POST['formation'];
-    $req = $bdd->prepare('UPDATE members_lspd SET '.$formation.' = 0 WHERE ID = ?');
+    $req = $bdd->prepare('UPDATE members_bcso SET '.$formation.' = 0 WHERE ID = ?');
     $req->execute(array($agent));
     echo "success";
 }

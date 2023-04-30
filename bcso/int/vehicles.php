@@ -21,7 +21,7 @@ include('functions/loginverif.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Véhicules - LSPD</title>
+    <title>Véhicules - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -36,7 +36,7 @@ include('functions/loginverif.php');
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -46,9 +46,9 @@ include('functions/loginverif.php');
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -81,7 +81,7 @@ include('functions/loginverif.php');
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Véhicules</h1>
-                    <p class="mb-4">Véhicules du garage LSPD</p>
+                    <p class="mb-4">Véhicules du garage BCSO</p>
                     <p><label>Rechercher:
                             <input id="myInput" type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable" onkeyup="myFunction()">
                         </label></p>
@@ -109,17 +109,10 @@ include('functions/loginverif.php');
                                             <input type="text" class="form-control" id="plate" name="plate" placeholder="Plaque d'immatriculation" required>
                                             <label for="model">Modèle</label>
                                             <select class="form-control" id="model" name="model">
-                                                <option value="13fpiuvs">13fpiuvs</option>
-                                                <option value="18tahoevs">18tahoevs</option>
-                                                <option value="18FordF150">18FordF150</option>
-                                                <option value="13caprice">13caprice</option>
-                                                <option value="14chargervs">14chargervs</option>
-                                                <option value="18taurus">18taurus</option>
-                                                <option value="16fpiuvs">16fpiuvs</option>
-                                                <option value="11cvpiv">11cvpiv</option>
+                                                <option value="FordMustang">Ford Mustang</option>
                                                 <option value="Vic">Vic</option>
-                                                <option value="VIR">VIR</option>
-                                                <option value="MOTO">Moto</option>
+                                                <option value="Policeb">Moto</option>
+                                                <option value="VapidTarv">Vapid Tarv</option>
                                             </select>
                                         </div>
                                         <div class="modal-footer">
@@ -165,7 +158,7 @@ include('functions/loginverif.php');
                                             <select class="form-control" id="plate2" name="plate2" onchange="vehload()">
                                                 <option value="0">Sélectionner une plaque</option>
                                             <?php
-                                                $reqveh = $bdd->prepare("SELECT ID, plate, label FROM vehicles_lspd ORDER BY label ASC");
+                                                $reqveh = $bdd->prepare("SELECT ID, plate, label FROM vehicles_bcso ORDER BY label ASC");
                                                 $reqveh->execute();
                                                 while($plate = $reqveh->fetch()){
                                                     echo '<option value="'.$plate['plate'].'">'.$plate['plate'].'</option>';
@@ -178,7 +171,7 @@ include('functions/loginverif.php');
                                             <select class="form-control" id="owner2" name="owner2">
                                                 <option value="0">Non attribué</option>
                                             <?php
-                                                $reqowner = $bdd->prepare("SELECT ID, firstname, name FROM members_lspd ORDER BY name ASC");
+                                                $reqowner = $bdd->prepare("SELECT ID, firstname, name FROM members_bcso ORDER BY name ASC");
                                                 $reqowner->execute();
                                                 while($owner = $reqowner->fetch()){
                                                     echo '<option value="'.$owner['ID'].'">'.$owner['firstname'].' '.$owner['name'].'</option>';
@@ -247,7 +240,7 @@ include('functions/loginverif.php');
                                             <select class="form-control" id="plate3" name="plate3" onchange="vehload2()">
                                                 <option value="0">Sélectionner une plaque</option>
                                             <?php
-                                                $reqveh = $bdd->prepare("SELECT ID, plate, label FROM vehicles_lspd ORDER BY label ASC");
+                                                $reqveh = $bdd->prepare("SELECT ID, plate, label FROM vehicles_bcso ORDER BY label ASC");
                                                 $reqveh->execute();
                                                 while($plate = $reqveh->fetch()){
                                                     echo '<option value="'.$plate['plate'].'">'.$plate['plate'].'</option>';
@@ -260,7 +253,7 @@ include('functions/loginverif.php');
                                             <select class="form-control" id="owner3" name="owner3" disabled>
                                                 <option value="0">Non attribué</option>
                                             <?php
-                                                $reqowner = $bdd->prepare("SELECT ID, firstname, name FROM members_lspd ORDER BY name ASC");
+                                                $reqowner = $bdd->prepare("SELECT ID, firstname, name FROM members_bcso ORDER BY name ASC");
                                                 $reqowner->execute();
                                                 while($owner = $reqowner->fetch()){
                                                     echo '<option value="'.$owner['ID'].'">'.$owner['firstname'].' '.$owner['name'].'</option>';
@@ -335,7 +328,7 @@ include('functions/loginverif.php');
                                     <tbody>
                                         <!-- get infos from database -->
                                         <?php
-                                        $req = $bdd->prepare('SELECT * FROM vehicles_lspd ORDER BY label ASC');
+                                        $req = $bdd->prepare('SELECT * FROM vehicles_bcso ORDER BY label ASC');
                                         $req->execute();
                                         while ($data = $req->fetch()) {
                                             echo '<tr>';
@@ -345,7 +338,7 @@ include('functions/loginverif.php');
                                             if ($data['owner'] == 0) {
                                                 echo '<td>Non attribué</td>';
                                             } else {
-                                                $req2 = $bdd->prepare('SELECT name, firstname FROM members_lspd WHERE ID = ?');
+                                                $req2 = $bdd->prepare('SELECT name, firstname FROM members_bcso WHERE ID = ?');
                                                 $req2->execute(array($data['owner']));
                                                 $owner = $req2->fetch();
                                                 echo '<td>' . $owner['name'] . ' ' . $owner['firstname'] . '</td>';
@@ -369,7 +362,7 @@ include('functions/loginverif.php');
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

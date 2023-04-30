@@ -13,23 +13,6 @@ echo '<li class="nav-item active">
 
 </div>
 
-
-
-<li class="nav-item">
-<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-    aria-expanded="true" aria-controls="collapseThree">
-    <i class="fas fa-fw fa-book"></i>
-    <span>Civils</span>
-</a>
-<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="civils.php">Liste</a>
-        <a class="collapse-item" href="add_civils.php">Ajouter</a>
-    </div>
-</div>
-
-</li>
-
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -46,6 +29,21 @@ echo '<li class="nav-item active">
 </li>
 
 <li class="nav-item">
+<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+    aria-expanded="true" aria-controls="collapseThree">
+    <i class="fas fa-fw fa-book"></i>
+    <span>Civils</span>
+</a>
+<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="civils.php">Liste</a>
+        <a class="collapse-item" href="add_civils.php">Ajouter</a>
+    </div>
+</div>
+
+</li>
+
+<li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
         <i class="fas fa-fw fa-handcuffs"></i>
         <span>Wanted</span>
@@ -59,16 +57,16 @@ echo '<li class="nav-item active">
 </li>
 
 <li class="nav-item">
-<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsebcso"
+<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapselspd"
     aria-expanded="true" aria-controls="collapseinfo">
     <i class="fas fa-fw fa-star"></i>
-    <span>BCSO</span>
+    <span>LSPD</span>
 </a>
-<div id="collapsebcso" class="collapse" aria-labelledby="informations" data-parent="#collapsebcso">
+<div id="collapselspd" class="collapse" aria-labelledby="informations" data-parent="#collapselspd">
     <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="civils_bcso.php">Civils</a>
-        <a class="collapse-item" href="casiers_bcso.php">Casiers</a>
-        <a class="collapse-item" href="wanted_bcso.php">Wanted</a>
+        <a class="collapse-item" href="civils_lspd.php">Civils</a>
+        <a class="collapse-item" href="casiers_lspd.php">Casiers</a>
+        <a class="collapse-item" href="wanted_lspd.php">Wanted</a>
     </div>
 </div>
 </li>
@@ -92,14 +90,13 @@ Utiles
 </a>
 <div id="collapsetwo" class="collapse" aria-labelledby="informations" data-parent="#collapsetwo">
     <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="list_formations.php">Effectifs</a>
-        <a class="collapse-item" href="reglement.php">Règlement / Manuel</a>
-        <a class="collapse-item" href="codepenal.php">Code pénal</a>
+        <a class="collapse-item" href="codepenal.php">Code Pénal</a>
         <a class="collapse-item" href="miranda.php">Droits Miranda</a>
         <a class="collapse-item" href="amendes.php">Amendes</a>
+        <a class="collapse-item" href="phone.php">Numéros</a>
         <a class="collapse-item" href="saisies.php">Casiers de saisie</a>
         <a class="collapse-item" href="radio.php">Radio</a>
-        <a class="collapse-item" href="codes.php">10-Codes / Alphabet</a>
+        <a class="collapse-item" href="weapons.php">Armes</a>
         <a class="collapse-item" href="maps.php">Carte</a>
     </div>
 </div>
@@ -109,16 +106,13 @@ Utiles
     <i class="fas fa-fw fa-file"></i>
     <span>Procédures</span></a>
 </li>
-
-
-<hr class="sidebar-divider d-none d-md-block">';
-
-//include('divisions_panel.php');
-/*
 <li class="nav-item">
     <a class="nav-link" href="dispatch.php">
     <i class="fas fa-fw fa-headset"></i>
     <span>Dispatch</span></a>
 </li>
-*/
+
+<hr class="sidebar-divider d-none d-md-block">';
+
+include('divisions_panel.php');
 ?>

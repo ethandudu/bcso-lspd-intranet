@@ -10,17 +10,17 @@ include('functions/loginverif.php');
 
 if (isset($_POST['submit'])){
     $datebdd = date('Y-m-d H:i:s', strtotime($_POST['date']));
-    $req = $bdd->prepare('UPDATE wanted_lspd SET datetime = ?, reason = ?, officier = ?, note = ?, public = ? WHERE ID = ?');
+    $req = $bdd->prepare('UPDATE wanted_bcso SET datetime = ?, reason = ?, officier = ?, note = ?, public = ? WHERE ID = ?');
     $req->execute(array($datebdd, $_POST['motif'], $_POST['officier'], $_POST['note'], $_POST['public'], $_GET['id']));
     header("Location: wanted.php");
 }
 
 if (isset($_GET['id'])) {
-    $req = $bdd->prepare('SELECT * FROM wanted_lspd WHERE ID = ?');
+    $req = $bdd->prepare('SELECT * FROM wanted_bcso WHERE ID = ?');
     $req->execute(array($_GET['id']));
     $req = $req->fetch();
 
-    $civil = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+    $civil = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
     $civil->execute(array($req['civilid']));
     $civil = $civil->fetch();
     $datelocal = date('Y-m-d\TH:i', strtotime($req['datetime']));
@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Wanted - LSPD</title>
+    <title>Wanted - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -56,7 +56,7 @@ if (isset($_GET['id'])) {
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -66,9 +66,9 @@ if (isset($_GET['id'])) {
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -128,7 +128,7 @@ if (isset($_GET['id'])) {
                                         <select class="form-control" name="officier" id="officier" required>
                                             <?php
                                                 # show all officier in the list and select the one who did the sanction
-                                                $req2 = $bdd->query('SELECT * FROM members_lspd');
+                                                $req2 = $bdd->query('SELECT * FROM members_bcso');
                                                 while($officier = $req2->fetch()){
                                                     if($officier['ID'] == $req['officier']){
                                                         echo '<option value="'.$officier['ID'].'" selected>'.$officier['firstname'].' '.$officier['name'].'</option>';
@@ -172,7 +172,7 @@ if (isset($_GET['id'])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

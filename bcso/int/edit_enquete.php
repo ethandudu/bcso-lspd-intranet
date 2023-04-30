@@ -10,17 +10,17 @@ include('functions/loginverif.php');
 include('functions/verifs_divisions/verif_be.php');
 
 if (isset($_POST['submit'])){
-    $req = $bdd->prepare('UPDATE enquetes_lspd SET object = ? WHERE ID = ?');
+    $req = $bdd->prepare('UPDATE enquetes_bcso SET object = ? WHERE ID = ?');
     $req->execute(array($_POST['editor'], $_GET['id']));
     
     header("Location: enquetes_list.php");
 }
 
 if (isset($_GET['id'])) {
-    $req = $bdd->prepare('SELECT * FROM enquetes_lspd WHERE ID = ?');
+    $req = $bdd->prepare('SELECT * FROM enquetes_bcso WHERE ID = ?');
     $req->execute(array($_GET['id']));
     $req = $req->fetch();
-    $officier = $bdd->prepare('SELECT * FROM members_lspd WHERE ID = ?');
+    $officier = $bdd->prepare('SELECT * FROM members_bcso WHERE ID = ?');
     $officier->execute(array($req['Officier']));
     $officier = $officier->fetch();
     $datelocal = date('d/m/Y', strtotime($req['Date']));
@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Enquêtes - LSPD</title>
+    <title>Enquêtes - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@ if (isset($_GET['id'])) {
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -67,9 +67,9 @@ if (isset($_GET['id'])) {
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -135,7 +135,7 @@ if (isset($_GET['id'])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

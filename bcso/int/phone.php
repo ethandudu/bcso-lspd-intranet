@@ -20,7 +20,7 @@ include('functions/loginverif.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Wanted - LSPD</title>
+    <title>Numéros - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@ include('functions/loginverif.php');
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -45,9 +45,9 @@ include('functions/loginverif.php');
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -79,22 +79,18 @@ include('functions/loginverif.php');
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Wanted</h1>
-                    <p class="mb-4">Tous les civils recherchés par le BCSO</p>
+                    <h1 class="h3 mb-2 text-gray-800">Numéros de téléphone</h1>
+                    <p class="mb-4">Tous les agents enregistrés</p>
                     <p><label>Rechercher:
                             <input id="myInput" type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable" onkeyup="myFunction()">
                         </label></p>
                     <br>
-                    <?php
-                        if (isset($_GET['error']) AND $_GET['error'] == "permission") {
-                            echo '<div class="alert alert-danger" role="alert">
-                            Vous n\'avez pas les droits pour accéder à cette page.
-                          </div>';
-                        }
-                    ?>
+                    
+
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Agents</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -102,40 +98,27 @@ include('functions/loginverif.php');
                                     <thead>
                                         <tr>
                                             <th>Nom Prénom</th>
-                                            <th>Date de publication</th>
-                                            <th>Motif</th>
-                                            <th>Officier</th>
-                                            <th>Actions</th>
+                                            <th>Grade</th>
+                                            <th>Tel</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                        <th>Nom Prénom</th>
-                                            <th>Date de publication</th>
-                                            <th>Motif</th>
-                                            <th>Officier</th>
-                                            <th>Actions</th>
+                                            <th>Nom Prénom</th>
+                                            <th>Grade</th>
+                                            <th>Tel</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         <!-- get infos from database -->
                                         <?php
-                                        $req = $bdd->prepare('SELECT * FROM wanted_bcso ORDER BY datetime DESC');
+                                        $req = $bdd->prepare('SELECT name, firstname, grade, tel FROM members_bcso ORDER BY name ASC');
                                         $req->execute();
                                         while ($data = $req->fetch()) {
-                                            $req2 = $bdd->prepare('SELECT name, firstname FROM civils_bcso WHERE ID = ?');
-                                            $req2->execute(array($data['civilid']));
-                                            $data2 = $req2->fetch();
                                             echo '<tr>';
-                                            echo '<td>' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
-                                            $date2 = date("d/m/Y H:i", strtotime($data['datetime']));
-                                            echo '<td>' . $date2 . '</td>';
-                                            echo '<td>' . $data['reason'] . '</td>';
-                                            $req2 = $bdd->prepare('SELECT name, firstname FROM members_bcso WHERE ID = ?');
-                                            $req2->execute(array($data['officier']));
-                                            $data2 = $req2->fetch();
-                                            echo '<td>' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
-                                            echo '<td class="text-center"><a href="details_wanted_bcso.php?id=' . $data['ID'] . '"><i class="fas fa-eye"></i></a></td>';
+                                            echo '<td>' . $data['name'] . ' ' . $data['firstname'] . '</td>';
+                                            echo '<td>' . $data['grade'] . '</td>';
+                                            echo '<td>' . $data['tel'] . '</td>';
                                         }
                                         ?>
                                         
@@ -156,7 +139,7 @@ include('functions/loginverif.php');
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>
@@ -203,6 +186,14 @@ include('functions/loginverif.php');
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
     <script>
 function myFunction() {

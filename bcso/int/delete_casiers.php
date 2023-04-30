@@ -8,28 +8,96 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-//permission test
-if (($_COOKIE['grade']=="Commandant")){
-
-}else {
-    header('Location: casiers.php?error=permission');
-}
-
-
 $id = $_GET['id'];
-$req2 = $bdd->prepare('SELECT * FROM casiers_lspd WHERE ID = ?');
+$req2 = $bdd->prepare('SELECT * FROM casiers_bcso WHERE ID = ?');
 $req2->execute(array($_GET['id']));
 $req2 = $req2->fetch();
 
-$req3 = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+$req3 = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
 $req3->execute(array($req2['civilid']));
 $req3 = $req3->fetch();
 
 $namefirstname = $req3['name'] . ' ' . $req3['firstname'];
 
 if (isset($_POST['delete-confirmation'])) {
+    
+    $title = "📁 Casier supprimé";
+    $color = "f4b619";
+    // Log vers Discord Privé
+    $webhookurl = "https://discordapp.com/api/webhooks/1082985752108994561/Il4YcsSn7WdRDeROlEFuo_t_fXc15Chno4NeMII0kO7nePwjp5weQa5uOLUYiwD2hvAs";
 
-    $req = $bdd->prepare('DELETE FROM casiers_lspd WHERE ID = ?');
+    $timestamp = date("c", strtotime("now"));
+
+    $json_data = json_encode([
+
+        "content" => "",
+
+    // Embeds Array
+        "embeds" => [
+            [
+                "title" => $title,
+
+                "type" => "rich",
+
+                "description" => "",
+
+                "fields" => [
+                    [
+                        "name" => "Nom Prénom",
+                        "value" => $req3['name'] . " " . $req3['firstname'],
+                        "inline" => false
+                    ],
+                    [
+                        "name" => "Infraction",
+                        "value" => $req2['crime'],
+                        "inline" => false
+                    ],
+                    [
+                        "name" => "Sanction",
+                        "value" => $req2['sanction'],
+                        "inline" => false
+                    ],
+                    [
+                        "name" => "Date",
+                        "value" => date("d/m/Y H:i", strtotime($req2['date'])),
+                        "inline" => false
+                    ],
+                    [
+                        "name" => "Officier",
+                        "value" => $req2['officer'],
+                        "inline" => false
+                    ],
+                    [
+                        "name" => "Supprimé par",
+                        "value" => $_COOKIE["firstname"] . " " . $_COOKIE["name"],
+                        "inline" => false
+
+                    ]
+                ],
+
+                "color" => hexdec($color),
+            
+                "footer" => [
+                    "text" => "BCSO",
+                    "icon_url" => "https://bcso.ethanduault.fr/assets/img/logo_bcso.png"
+                ],
+
+                "timestamp" => $timestamp,
+            ],
+        ]
+
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+    $ch = curl_init($webhookurl);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_close($ch);
+
+    $req = $bdd->prepare('DELETE FROM casiers_bcso WHERE ID = ?');
     $req->execute(array($id));
     header("Location: casiers.php");
 }
@@ -47,7 +115,7 @@ if (isset($_POST['delete-confirmation'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Casiers - LSPD</title>
+    <title>Casiers - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -62,7 +130,7 @@ if (isset($_POST['delete-confirmation'])) {
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -72,9 +140,9 @@ if (isset($_POST['delete-confirmation'])) {
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -134,7 +202,7 @@ if (isset($_POST['delete-confirmation'])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2022</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2022</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

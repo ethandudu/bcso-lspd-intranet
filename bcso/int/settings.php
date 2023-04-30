@@ -15,8 +15,8 @@ if (isset($_POST['submit'])) {
     } else {
         $recrutement = 0;
     }
-    $req = $bdd->prepare('UPDATE settings SET recrutement_lspd = ?, freq_lspd = ?, freq_lspd_op = ?, freq_ems = ?, freq_harmony = ?, defcon_lspd = ?');
-    $req->execute(array($recrutement, $_POST['freq_lspd'], $_POST['freq_lspd_op'], $_POST['freq_ems'], $_POST['freq_harmony'], $_POST['defcon_lspd']));
+    $req = $bdd->prepare('UPDATE settings SET recrutement_bcso = ?, freq_bcso = ?, freq_lspd = ?, freq_ems = ?, freq_harmony = ?');
+    $req->execute(array($recrutement, $_POST['freq_bcso'], $_POST['freq_ems'], $_POST['freq_harmony']));
 }
 
 $req2 = $bdd->prepare('SELECT * FROM settings');
@@ -36,7 +36,7 @@ $settings = $req2->fetch();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Paramètres - LSPD</title>
+    <title>Paramètres - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -51,7 +51,7 @@ $settings = $req2->fetch();
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -61,9 +61,9 @@ $settings = $req2->fetch();
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -106,7 +106,7 @@ $settings = $req2->fetch();
                             <h1>Recrutement</h1>
                             <form method="post">
                             <div class="custom-control custom-switch">
-                                <?php if($settings['recrutement_lspd'] == 1) {
+                                <?php if($settings['recrutement_bcso'] == 1) {
                                     echo '<input type="checkbox" class="custom-control-input" id="recrutement" name="recrutement" checked>';
                                 } else {
                                     echo '<input type="checkbox" class="custom-control-input" id="recrutement" name="recrutement">';} ?>
@@ -114,29 +114,17 @@ $settings = $req2->fetch();
                             </div>
                             <h1>Fréquences</h1>
                             <div class="form-group">
-                                <label for="freq_lspd">LSPD</label>
-                                <input type="text" class="form-control" name="freq_lspd" placeholder="Fréquence" value=<?php echo $settings['freq_lspd']; ?>>
-                                <label for="freq_lspd">LSPD OP</label>
-                                <input type="text" class="form-control" name="freq_lspd_op" placeholder="Fréquence" value=<?php echo $settings['freq_lspd_op']; ?>>
-                                <label for="freq_ems">EMS</label>
-                                <input type="text" class="form-control" name="freq_ems" placeholder="Fréquence" value=<?php echo $settings['freq_ems']; ?>>
-                                <label for="freq_harmony">Harmony</label>
-                                <input type="text" class="form-control" name="freq_harmony" placeholder="Fréquence" value=<?php echo $settings['freq_harmony']; ?>>
+                                
+                                    <label for="freq_bcso">BCSO</label>
+                                    <input type="text" class="form-control" name="freq_bcso" placeholder="Fréquence" value=<?php echo $settings['freq_bcso']; ?>>
+                                    <label for="freq_ems">EMS</label>
+                                    <input type="text" class="form-control" name="freq_ems" placeholder="Fréquence" value=<?php echo $settings['freq_ems']; ?>>
+                                    <label for="freq_harmony">Harmony</label>
+                                    <input type="text" class="form-control" name="freq_harmony" placeholder="Fréquence" value=<?php echo $settings['freq_harmony']; ?>>
+                                    <br>
+                                    <input type="submit" class="btn btn-success" name="submit" value="Sauvegarder">
+                                
                             </div>
-
-                            <h1>Defcon</h1>
-                            <div class="form-group">
-                                <label for="defcon_lspd">Defcon LSPD</label>
-                                <select class="form-control" name="defcon_lspd">
-                                    <option value="1" <?php if($settings['defcon_lspd'] == 1) { echo 'selected'; } ?>>1</option>
-                                    <option value="2" <?php if($settings['defcon_lspd'] == 2) { echo 'selected'; } ?>>2</option>
-                                    <option value="3" <?php if($settings['defcon_lspd'] == 3) { echo 'selected'; } ?>>3</option>
-                                    <option value="4" <?php if($settings['defcon_lspd'] == 4) { echo 'selected'; } ?>>4</option>
-                                    <option value="5" <?php if($settings['defcon_lspd'] == 5) { echo 'selected'; } ?>>5</option>
-                                </select>
-                            </div>
-                            <br>
-                                <input type="submit" class="btn btn-success" name="submit" value="Sauvegarder">
                             </form>
                         </div>
                                         
@@ -152,7 +140,7 @@ $settings = $req2->fetch();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

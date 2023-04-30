@@ -25,56 +25,15 @@ if (isset($_POST['submit'])) {
     $tel = $_POST['inputPhone'];
     $username = $name.$firstname;
     $username = strtolower($username);
-    //truncate spaces
-    $username = preg_replace('/\s+/', '', $username);
-    //truncate accents
-    $username = str_replace(
-        array('à', 'â', 'ä', 'á', 'ã', 'å', 'ª', 'À', 'Â', 'Ä', 'Á', 'Ã', 'Å'),
-        array('a', 'a', 'a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A', 'A', 'A'),
-        $username
-    );
     $grade = $_POST['inputGrade'];
     $password = generatepassword();
     $passwordhashed = hash('sha256', $password);
-    $matricule = $_POST['matricule'];
-
-    
-    if ($grade == "Commandant"){
-        $gradevalue = 9;
-    }elseif ($grade == "Capitaine"){
-        $gradevalue = 8;
-    }elseif ($grade == "Lieutenant"){
-        $gradevalue = 7;
-    }elseif ($grade == "Sergent-Chef"){
-        $gradevalue = 6;
-    }elseif ($grade == "Sergent"){
-        $gradevalue = 5;
-    }elseif ($grade == "Officier III"){
-        $gradevalue = 4;
-    }elseif ($grade == "Officier II"){
-        $gradevalue = 3;
-    }elseif ($grade == "Officier I"){
-        $gradevalue = 2;
-    }elseif ($grade == "Cadet"){
-        $gradevalue = 1;
-    }
 
 
-    $req = $bdd->prepare('INSERT INTO members_lspd (matricule, name, firstname, tel, username, grade, gradevalue, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?)');
-    $req->execute(array($matricule, $name, $firstname, $tel, $username, $grade, $gradevalue, $passwordhashed));
-    $memberid = $bdd->lastInsertId();
+    $req = $bdd->prepare('INSERT INTO members_bcso (name, firstname, tel, username, grade, password) VALUES(?, ?, ?, ?, ?, ?)');
+    $req->execute(array($name, $firstname, $tel, $username, $grade, $passwordhashed));
 
     $stat = "Identifiants pour le compte de " . $name . " " . $firstname . " : " . $username . " / " . $password;
-
-    $type = "member";
-    $sender = $_COOKIE['id'];
-    $receiver = 40;
-    $text = "L'agent ". $matricule .' '.$name. " ".$firstname." a été créé";
-    $datetime = date("Y-m-d H:i:s");
-
-    $req = $bdd->prepare('INSERT INTO notifications (type, sender, receiver, text, datetime, civilid) VALUES(?, ?, ?, ?, ?, ?)');
-    $req->execute(array($type, $sender, $receiver, $text, $datetime, $memberid));
-
 }
 
 ?>
@@ -89,7 +48,7 @@ if (isset($_POST['submit'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Agents - LSPD</title>
+    <title>Agents - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -104,7 +63,7 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -114,9 +73,9 @@ if (isset($_POST['submit'])) {
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -159,10 +118,6 @@ if (isset($_POST['submit'])) {
                         <div class="card-body">
                             <form method="POST" name="newcasier" enctype="multipart/form-data">
                                 <div class="form-group row">
-                                    <label for="matricule" class="col-sm-2 col-form-label">Matricule</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="matricule" name="matricule" placeholder="Matricule" required>
-                                    </div>
                                     <label for="inputName" class="col-sm-2 col-form-label">Nom</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="inputName" name="inputName" placeholder="Nom" required>
@@ -179,15 +134,15 @@ if (isset($_POST['submit'])) {
                                     <label for="inputGrade" class="col-sm-2 col-form-label">Grade</label>
                                     <div class="col-sm-10">
                                         <select class="form-control" id="inputGrade" name="inputGrade" required>
-                                            <option value="Commandant">Commandant</option>
-                                            <option value="Capitaine">Capitaine</option>
+                                            <option value="Sheriff">Sheriff</option>
+                                            <option value="Sheriff Adjoint">Sheriff Adjoint</option>
+                                            <option value="Major">Major</option>
                                             <option value="Lieutenant">Lieutenant</option>
-                                            <option value="Sergent Chef">Sergent Chef</option>
                                             <option value="Sergent">Sergent</option>
-                                            <option value="Officier III">Officier III</option>
-                                            <option value="Officier II">Officier II</option>
-                                            <option value="Officier I">Officier I</option>
-                                            <option value="Cadet" selected>Cadet</option>
+                                            <option value="Senior Deputy">Senior Deputy</option>
+                                            <option value="Deputy I">Deputy I</option>
+                                            <option value="Deputy II">Deputy II</option>
+                                            <option value="Junior">Junior</option>
                                         </select>
                                     </div>
                                 </div>
@@ -211,7 +166,7 @@ if (isset($_POST['submit'])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

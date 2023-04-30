@@ -6,7 +6,7 @@ session_start();
 include('../config.php');
 
 if (isset($_COOKIE["userconnect"]) && isset($_COOKIE["mdpconnect"])){
-	$requser = $bdd->prepare("SELECT * FROM members_lspd WHERE username = ? AND password = ?");
+	$requser = $bdd->prepare("SELECT * FROM members_bcso WHERE username = ? AND password = ?");
 	$requser->execute(array($_COOKIE["userconnect"], $_COOKIE["mdpconnect"]));
 	$userexist = $requser->rowCount();
 	if ($userexist == 1) {
@@ -25,7 +25,7 @@ if (isset($_POST['formconnexion'])) {
 	$userconnect = htmlspecialchars($_POST['userconnect']);
 	$mdpconnect = hash('sha256', $_POST['mdpconnect']);
 	if (!empty($userconnect) and !empty($mdpconnect)) {
-	  $requser = $bdd->prepare("SELECT * FROM members_lspd WHERE username = ? AND password = ?");
+	  $requser = $bdd->prepare("SELECT * FROM members_bcso WHERE username = ? AND password = ?");
 	  $requser->execute(array($userconnect, $mdpconnect));
 	  $userexist = $requser->rowCount();
 	  if ($userexist == 1) {
@@ -37,10 +37,7 @@ if (isset($_POST['formconnexion'])) {
 			setcookie("grade", $userinfo['grade'], time() + 30*24*3600);
 			setcookie("name", $userinfo['name'], time() + 30*24*3600);
 			setcookie("firstname", $userinfo['firstname'], time() + 30*24*3600);
-			setcookie("division1", $userinfo['division1'], time() + 30*24*3600);
-			setcookie("division2", $userinfo['division2'], time() + 30*24*3600);
-			setcookie("matricule", $userinfo['matricule'], time() + 30*24*3600);
-
+			setcookie("division", $userinfo['division'], time() + 30*24*3600);
 
 		}else {
 			setcookie("userconnect", $userconnect, time() + 24*3600);
@@ -49,9 +46,7 @@ if (isset($_POST['formconnexion'])) {
 			setcookie("grade", $userinfo['grade'], time() + 24*3600);
 			setcookie("name", $userinfo['name'], time() + 24*3600);
 			setcookie("firstname", $userinfo['firstname'], time() + 24*3600);
-			setcookie("division1", $userinfo['division1'], time() + 24*3600);
-			setcookie("division2", $userinfo['division2'], time() + 24*3600);
-			setcookie("matricule", $userinfo['matricule'], time() + 24*3600);
+			setcookie("division", $userinfo['division'], time() + 24*3600);
 		}
 		
 		header("Location: index.php");
@@ -68,7 +63,7 @@ if (isset($_POST['formconnexion'])) {
 <!doctype html>
 <html lang="fr">
   <head>
-  	<title>Connexion - LSPD</title>
+  	<title>Connexion - BCSO</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -81,13 +76,12 @@ if (isset($_POST['formconnexion'])) {
 
 	</head>
 	<body>
-	<?php include ('functions/matomo.php');?>
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-7 col-lg-5">
 					<div class="wrap">
-						<div class="img" style="background-image: url(assets/banniere_lspd.png);"></div>
+						<div class="img" style="background-image: url(assets/banniere_bcso.png);"></div>
 						<div class="login-wrap p-4 p-md-5">
 			      	<div class="d-flex">
 			      		<div class="w-100">

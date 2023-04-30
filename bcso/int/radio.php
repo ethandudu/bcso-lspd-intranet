@@ -23,7 +23,7 @@ $settings = $req->fetch();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Radio - LSPD</title>
+    <title>Radio - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@ $settings = $req->fetch();
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -48,9 +48,9 @@ $settings = $req->fetch();
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -90,8 +90,8 @@ $settings = $req->fetch();
                             <h6 class="m-0 font-weight-bold text-primary">Liste des fréquences</h6>
                         </div>
                         <ul>
-                            <li>LSPD : <?php echo $settings['freq_lspd']?> MHz / OP : <?php echo $settings['freq_lspd_op']?> MHz</li>
                             <li>BCSO : <?php echo $settings['freq_bcso']?> MHz</li>
+                            <li>LSPD : <?php echo $settings['freq_lspd']?> MHz</li>
                             <li>EMS : <?php echo $settings['freq_ems']?> MHz</li>
                             <li>Harmony : <?php echo $settings['freq_harmony']?> MHz</li>
                         </ul>
@@ -107,7 +107,7 @@ $settings = $req->fetch();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

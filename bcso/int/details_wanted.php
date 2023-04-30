@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-$req1 = $bdd->prepare('SELECT * FROM wanted_lspd WHERE ID = ?');
+$req1 = $bdd->prepare('SELECT * FROM wanted_bcso WHERE ID = ?');
 $req1->execute(array($_GET['id']));
 $req1 = $req1->fetch();
 $date = $req1['datetime'];
@@ -18,16 +18,18 @@ $reason = $req1['reason'];
 $id = $req1['ID'];
 $civilid = $req1['civilid'];
 
-$req = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+$req = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
 $req->execute(array($civilid));
 $req = $req->fetch();
 $name = $req['name']. " ". $req['firstname'];
 
-$req2 = $bdd->prepare('SELECT name, firstname FROM members_lspd WHERE ID = ?');
+$req2 = $bdd->prepare('SELECT name, firstname FROM members_bcso WHERE ID = ?');
 $req2->execute(array($req1['officier']));
 $req2 = $req2->fetch();
 $officier = $req2['name']. " ". $req2['firstname'];
 
+
+//save pictures in a list
 
 ?>
 <!DOCTYPE html>
@@ -41,7 +43,7 @@ $officier = $req2['name']. " ". $req2['firstname'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Wanted - LSPD</title>
+    <title>Wanted - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -64,7 +66,7 @@ $officier = $req2['name']. " ". $req2['firstname'];
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -74,9 +76,9 @@ $officier = $req2['name']. " ". $req2['firstname'];
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -166,7 +168,7 @@ $officier = $req2['name']. " ". $req2['firstname'];
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

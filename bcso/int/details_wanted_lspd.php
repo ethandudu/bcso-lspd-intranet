@@ -7,6 +7,28 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include('functions/loginverif.php');
+
+$req1 = $bdd->prepare('SELECT * FROM wanted_lspd WHERE ID = ?');
+$req1->execute(array($_GET['id']));
+$req1 = $req1->fetch();
+$date = $req1['datetime'];
+$date = date("d/m/Y H:i", strtotime($date));
+$note = $req1['note'];
+$reason = $req1['reason'];
+$id = $req1['ID'];
+$civilid = $req1['civilid'];
+
+$req = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+$req->execute(array($civilid));
+$req = $req->fetch();
+$name = $req['name']. " ". $req['firstname'];
+
+$req2 = $bdd->prepare('SELECT name, firstname FROM members_lspd WHERE ID = ?');
+$req2->execute(array($req1['officier']));
+$req2 = $req2->fetch();
+$officier = $req2['name']. " ". $req2['firstname'];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -19,7 +41,7 @@ include('functions/loginverif.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Règlement / Manuel - LSPD</title>
+    <title>Wanted - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -29,12 +51,20 @@ include('functions/loginverif.php');
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+ .carousel-inner > .item > img,
+ .carousel-inner > .item > a > img {
+     display: block;
+     max-width: 100%;
+     height: 100px !important;
+ }
+ </style>
+
 
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -44,9 +74,9 @@ include('functions/loginverif.php');
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -78,17 +108,49 @@ include('functions/loginverif.php');
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Règlement / Manuel</h1>
-                    <br>
+                    <h1 class="h3 mb-2 text-gray-800">Wanted</h1>
+                    <p class="mb-4">Détails</p>
                     
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary"></h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Informations</h6>
                         </div>
                         <div class="card-body">
-                            <iframe src="https://docs.google.com/document/d/1EC3prLLRYhPbCSkhBQHZKhbYoGiqGnfAQ_ynv3PdcwY/edit?usp=sharing" width="100%" height="700px"></iframe>
+                            <!-- show the informations about the person stored in the database -->
+                            <label for="name" class="col-sm-2 col-form-label">Nom Prénom</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Nom Prénom" value="<?php  echo $name?>" disabled>
+                            </div>
+                            <label for="date" class="col-sm-2 col-form-label">Date de publication</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="date" name="date" placeholder="Date de publication" value="<?php  echo $date;?>"disabled>
+                            </div>
+                            <label for="reason" class="col-sm-2 col-form-label">Motif</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="motif" name="motif" placeholder="Motif" value="<?php  echo $reason;?>"disabled>
+                            </div>
+                            <label for="officier" class="col-sm-2 col-form-label">Officier</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="officier" name="officier" placeholder="officier" value="<?php  echo $officier;?>"disabled>
+                            </div>
+                            <label for="note" class="col-sm-2 col-form-label">Note</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="note" name="note" placeholder="/" value="<?php  echo $note;?>"disabled>
+                            </div>
+                            <label for="public" class="col-sm-2 col-form-label">Public</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="public" name="public" disabled>
+                                    <option value="1" <?php if($req1['public'] == 1) echo 'selected';?>>Oui</option>
+                                    <option value="0" <?php if($req1['public'] == 0) echo 'selected';?>>Non</option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="wanted.php" class="btn btn-secondary">Retour</a>
+                            <a href="export_wanted_lspd.php?id=<?php echo $id;?>" class="btn btn-success">Exporter</a>
                         </div>
                     </div>
 
@@ -102,7 +164,7 @@ include('functions/loginverif.php');
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>
@@ -150,8 +212,8 @@ include('functions/loginverif.php');
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
+    
 </body>
 
 </html>

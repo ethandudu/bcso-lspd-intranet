@@ -29,6 +29,7 @@ if (isset($_POST['submit'])) {
     $tel = $_POST['phone'];
     $division = $_POST['division'];
     $matricule = $_POST['matricule'];
+    $sanction = $_POST['sanction'];
     $id = $_GET['id'];
 
     if ($grade == "Commandant"){
@@ -51,8 +52,8 @@ if (isset($_POST['submit'])) {
         $gradevalue = 1;
     }
 
-    $req = $bdd->prepare('UPDATE members_lspd SET matricule = ?, name = ?, firstname = ?, grade = ?, gradevalue = ?, tel = ?, division = ? WHERE ID = ?');
-    $req->execute(array($matricule, $name, $firstname, $grade, $gradevalue, $tel, $division, $id));
+    $req = $bdd->prepare('UPDATE members_lspd SET matricule = ?, name = ?, firstname = ?, grade = ?, gradevalue = ?, tel = ?, division = ?, sanction = ? WHERE ID = ?');
+    $req->execute(array($matricule, $name, $firstname, $grade, $gradevalue, $tel, $division, $sanction, $id));
     header("Location: list_members.php");
 }
 
@@ -197,7 +198,21 @@ $req = $req->fetch();
                                     }
                                     ?>
                                 </select>
-                            </div>                
+                            </div>
+                            <label for="sanction" class="col-sm-2 col-form-label">Sanction</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="sanction" name="sanction" required>
+                                    <?php $sanctionlist = ["Aucune", "Avertissement", "Blâme"];
+                                    foreach ($sanctionlist as $sanction) {
+                                        if ($sanction == $req['sanction']) {
+                                            echo "<option value='$sanction' selected>$sanction</option>";
+                                        } else {
+                                            echo "<option value='$sanction'>$sanction</option>";
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <a href="list_members.php" class="btn btn-secondary">Retour</a>

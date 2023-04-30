@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-$reqcivil = $bdd -> prepare("SELECT * FROM civils_lspd WHERE ID = ?");
+$reqcivil = $bdd -> prepare("SELECT * FROM civils_bcso WHERE ID = ?");
 $reqcivil -> execute(array($_GET['id']));
 $civil = $reqcivil -> fetch();
 
@@ -28,7 +28,7 @@ class PDF extends FPDF
 		$name = $GLOBALS['name'];
 		$firstname = $GLOBALS['firstname'];
 		// Logo : 8 >position à gauche du document (en mm), 2 >position en haut du document, 80 >largeur de l'image en mm). La hauteur est calculée automatiquement.
-		$this->Image('assets/logo_lspd2.png',8,2);
+		$this->Image('assets/logo_bcso2.png',8,2);
 		// Saut de ligne 20 mm
 		$this->Ln(20);
 
@@ -93,8 +93,14 @@ $pdf->Cell(43,6,utf8_decode("Date de naissance :"),0,0,'L',0);
 $datetimelocal = new DateTime($civil['birthdate']);
 $birthdate = $datetimelocal->format('d/m/Y');
 $pdf->Cell(40,6,utf8_decode($birthdate),0,1,'L',0);
+$pdf->Cell(43,6,utf8_decode("Adresse :"),0,0,'L',0);
+$pdf->Cell(40,6,utf8_decode($civil['address']),0,1,'L',0);
 $pdf->Cell(43,6,utf8_decode("Téléphone :"),0,0,'L',0);
 $pdf->Cell(40,6,utf8_decode($civil['tel']),0,1,'L',0);
+$pdf->Cell(43,6,utf8_decode("Couleur de peau"),0,0,'L',0);
+$pdf->Cell(40,6,utf8_decode($civil['skin']),0,1,'L',0);
+$pdf->Cell(43,6,utf8_decode("Couleur des cheveux :"),0,0,'L',0);
+$pdf->Cell(40,6,utf8_decode($civil['hair']),0,1,'L',0);
 $pdf->Cell(43,6,utf8_decode("Note :"),0,0,'L',0);
 if ($civil['note'] == "") {
 	$civil['note'] = "Aucune note";

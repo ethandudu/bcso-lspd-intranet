@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Bienvenue sur le site internet de la LSPD d'American Stories" />
-        <title>LSPD - American Stories</title>
+        <meta name="description" content="Bienvenue sur le site internet du BCSO d'American Stories" />
+        <title>BCSO - American Stories</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -18,10 +18,10 @@
         <!-- Navigation-->
         
         <!-- Header-->
-        <header class="masthead text-center text-white"  style="background-image: url('assets/img/lspd_front.jpg');">
+        <header class="masthead text-center text-white"  style="background-image: url('assets/img/bcso_paleto_front.png');">
             <div class="masthead-content">
                 <div class="container px-5">
-                    <h1 class="masthead-heading mb-0">LSPD</h1>
+                    <h1 class="masthead-heading mb-0">BCSO</h1>
                     <h2 class="masthead-subheading mb-0">Maintenance</h2>
                 </div>
             </div>
@@ -43,7 +43,7 @@
         </section>
         <!-- Footer-->
         <footer class="py-5 bg-black">
-            <div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; LSPD - American Stories 2022</p></div>
+            <div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; BCSO - Amercian Stories 2022</p></div>
             <div class="container px-5"><p class="m-0 text-center text-white small">Made with <i color: Tomato class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></p></div>
         </footer>
         <!-- Bootstrap core JS-->

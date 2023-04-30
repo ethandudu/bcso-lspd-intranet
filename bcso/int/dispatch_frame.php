@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 include ('../config.php');
 
-$req = $bdd->prepare('SELECT ID, matricule, name, firstname, grade, division, dispatch_unit FROM members_lspd ORDER BY name ASC');
+$req = $bdd->prepare('SELECT ID, name, firstname, grade, division, dispatch_unit FROM members_bcso ORDER BY name ASC');
 $req->execute();
 $members = $req->fetchAll();
 
@@ -14,7 +14,7 @@ header("refresh: 120");
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Dispatch LSPD</title>
+  <title>Dispatch BCSO</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -37,7 +37,7 @@ h1{
 	font-size:2rem;
 }
   .column {
-    width: 220px;
+    width: 200px;
     float: left;
 		border: solid 4px black;
 		min-height: 500px;
@@ -92,7 +92,7 @@ h1{
           }
           var countdownTimer = setInterval('secondPassed()', 1000);
         </script>
-        <input type="button" name="submit" value="Enregistrer" class="btn btn-primary btn-success btn-block" onclick="update()"></input><br>
+        <input type="button" name="submit" value="Enregistrer" class="btn btn-primary btn-success btn-block" onclick="update()"></input>
         <script>
           function update(){
             <?php
@@ -118,36 +118,34 @@ h1{
     </div>
     <div class="scrumboard row">
       <div class="column flex" id="unit-0">
-	      <h1>Liste des agents</h1>
+	      <h1>Agents disponibles</h1>
         <?php
         foreach ($members as $member) {
           if($member['dispatch_unit'] == 0) {
             echo '<div class="portlet" id="agent-'.$member['ID'].'">
-          <div class="portlet-header" style="color: #e02d1b;">'.$member['name'].' '.$member['firstname'].'</div>
-          <div class="portlet-content">Matricule : '.$member['matricule'].'<br>
-            Grade : '.$member['grade'].'<br>
-            Division : '.$member['division'].'<br></div>
-          </div>';
+            <div class="portlet-header">'.$member['name'].' '.$member['firstname'].'</div>
+            <div class="portlet-content">Grade : '.$member['grade'].'<br>
+              Division : '.$member['division'].'</div>
+            </div>';
           }
         }
         ?> 
       </div>
       <?php
-      $req2 = $bdd->prepare('SELECT ID, name FROM dispatch_units_lspd ORDER BY name ASC');
+      $req2 = $bdd->prepare('SELECT ID, name FROM dispatch_units_bcso ORDER BY name ASC');
       $req2->execute();
       $dispatch_unit = $req2->fetchAll();
       foreach ($dispatch_unit as $unit) {
         echo '<div class="column flex" id="unit-'.$unit['ID'].'">
           <h1>'.$unit['name'].'</h1>';
-        $req3 = $bdd->prepare('SELECT ID, name, matricule, firstname, grade, division, dispatch_unit FROM members_lspd WHERE dispatch_unit = ? ORDER BY name ASC');
+        $req3 = $bdd->prepare('SELECT ID, name, firstname, grade, division, dispatch_unit FROM members WHERE dispatch_unit = ? ORDER BY name ASC');
         $req3->execute(array($unit['ID']));
         $members = $req3->fetchAll();
         foreach ($members as $member) {
           echo '<div class="portlet" id="agent-'.$member['ID'].'">
           <div class="portlet-header">'.$member['name'].' '.$member['firstname'].'</div>
-          <div class="portlet-content">Matricule : '.$member['matricule'].'<br>
-            Grade : '.$member['grade'].'<br>
-            Division : '.$member['division'].'<br></div>
+          <div class="portlet-content">Grade : '.$member['grade'].'<br>
+          Division : '.$member['division'].'</div>
           </div>';
         }
         echo '</div>';

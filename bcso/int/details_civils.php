@@ -8,19 +8,24 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-$req = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+$req = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
 $req->execute(array($_GET['id']));
 $req = $req->fetch();
 $name = $req['name'];
 $firstname = $req['firstname'];
 $birthdate = $req['birthdate'];
 $birthdate = date('d/m/Y', strtotime($birthdate));
+$skin = $req['skin'];
+$hair = $req['hair'];
 $tel = $req['tel'];
+$address = $req['address'];
 $note = $req['note'];
 $picface = $req['picface'];
 $picback = $req['picback'];
 $picright = $req['picright'];
 $id = $req['ID'];
+
+//save pictures in a list
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +39,7 @@ $id = $req['ID'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Civils - LSPD</title>
+    <title>Civils - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -57,7 +62,7 @@ $id = $req['ID'];
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -67,9 +72,9 @@ $id = $req['ID'];
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -102,7 +107,7 @@ $id = $req['ID'];
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Civils</h1>
-                    <p class="mb-4">Casier judiciaire</p>
+                    <p class="mb-4">Fiche civil</p>
                     
 
                     <!-- DataTales Example -->
@@ -120,9 +125,21 @@ $id = $req['ID'];
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="Date de naissance" value="<?php  echo $birthdate;?>"disabled>
                             </div>
+                            <label for="address" class="col-sm-2 col-form-label">Adresse</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Adresse" value="<?php  echo $address;?>"disabled>
+                            </div>
                             <label for="phone" class="col-sm-2 col-form-label">Téléphone</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?php  echo $tel;?>"disabled>
+                            </div>
+                            <label for="skin" class="col-sm-2 col-form-label">Peau</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="skin" name="skin" placeholder="Peau" value="<?php  echo $skin;?>"disabled>
+                            </div>
+                            <label for="hair" class="col-sm-2 col-form-label">Cheveux</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="hair" name="hair" placeholder="Cheveux" value="<?php  echo $hair;?>"disabled>
                             </div>
                             <label for="note" class="col-sm-2 col-form-label">Note</label>
                             <div class="col-sm-10">
@@ -187,7 +204,7 @@ $id = $req['ID'];
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

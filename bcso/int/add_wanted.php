@@ -8,12 +8,6 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-if (($_COOKIE['grade']=="Commandant") OR ($_COOKIE['grade']=="Capitaine") OR ($_COOKIE['grade']=="Lieutenant") OR ($_COOKIE['grade']=="Sergent Chef")){
-
-}else {
-    header('Location: wanted.php?error=permission');
-}
-
 if (isset($_POST['submit'])) {
     $civilid = $_POST['inputName'];
     $crime = $_POST['crime'];
@@ -24,23 +18,8 @@ if (isset($_POST['submit'])) {
     $note = $_POST['note'];
     $public = $_POST['public'];
 
-    $req = $bdd->prepare('INSERT INTO wanted_lspd (civilid, datetime, reason, officier, note, public) VALUES (?, ?, ?, ?, ?, ?)');
+    $req = $bdd->prepare('INSERT INTO wanted_bcso (civilid, datetime, reason, officier, note, public) VALUES(?, ?, ?, ?, ?,');
     $req->execute(array($civilid,$date2,$crime,$officier,$note,$public));
-
-    $wantedid = $bdd->lastInsertId();
-
-    $req = $bdd->prepare('SELECT name, firstname FROM civils_lspd WHERE ID = ?');
-    $req->execute(array($civilid));
-    $result = $req->fetch();
-
-    $type = "wanted";
-    $sender = $_COOKIE['id'];
-    $receiver = 40;
-    $text = 'Un nouveau wanted a été émis pour '. $result['name']. " ".$result['firstname'];
-    $datetime = date("Y-m-d H:i:s");
-
-    $req = $bdd->prepare('INSERT INTO notifications_lspd (type, sender, receiver, text, datetime, civilid) VALUES (?, ?, ?, ?, ?, ?)');
-    $req->execute(array($type, $sender, $receiver, $text, $datetime, $wantedid));
 
     header("Location: wanted.php");
 }
@@ -57,7 +36,7 @@ if (isset($_POST['submit'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Wanted - LSPD</title>
+    <title>Wanted - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -72,7 +51,7 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -82,9 +61,9 @@ if (isset($_POST['submit'])) {
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -215,7 +194,7 @@ if (isset($_POST['submit'])) {
                                     <div class="col-sm-10">
                                         <select class="form-control" name="officier" id="officier" required>
                                             <?php
-                                                $req = $bdd->query('SELECT ID, name, firstname FROM members_lspd WHERE ID = '.$_COOKIE['id'].'');
+                                                $req = $bdd->query('SELECT ID, name, firstname FROM members_bcso WHERE ID = '.$_COOKIE['id'].'');
                                                 while($data = $req->fetch()){
                                                     echo('<option value="'.$data['ID'].'">'.$data['firstname'].' '.$data['name'].'</option>');
                                                 }
@@ -250,7 +229,7 @@ if (isset($_POST['submit'])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>

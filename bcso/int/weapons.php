@@ -19,7 +19,7 @@ include('functions/loginverif.php');
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Civils - LSPD</title>
+    <title>Armes - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,7 +34,7 @@ include('functions/loginverif.php');
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -44,9 +44,9 @@ include('functions/loginverif.php');
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -78,77 +78,18 @@ include('functions/loginverif.php');
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Civils BCSO</h1>
-                    <p class="mb-4">Tous les civils enregistrés par le BCSO</p>
-                    <p><label>Rechercher:
-                            <input id="myInput" type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable" onkeyup="myFunction()">
-                        </label></p>
-                    <br>
-                    <?php
-                        if (isset($_GET['error']) AND $_GET['error'] == "permission") {
-                            echo '<div class="alert alert-danger" role="alert">
-                            Vous n\'avez pas les droits pour accéder à cette page.
-                          </div>';
-                        }
-                    ?>
-                    
+                    <h1 class="h3 mb-2 text-gray-800">Armes</h1>
 
-                    <!-- DataTales Example -->
+                    <!-- list of weapons -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Armes autorisées avec PPA</h6>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Nom Prénom</th>
-                                            <th>Date de naissance</th>
-                                            <th>Peau</th>
-                                            <th>Cheveux</th>
-                                            <th>Téléphone</th>
-                                            <th>Adresse</th>
-                                            <th>Note</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Nom Prénom</th>
-                                            <th>Date de naissance</th>
-                                            <th>Peau</th>
-                                            <th>Cheveux</th>
-                                            <th>Téléphone</th>
-                                            <th>Adresse</th>
-                                            <th>Note</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <!-- get infos from database -->
-                                        <?php
-                                        $req = $bdd->prepare('SELECT ID, name, firstname, birthdate, skin, hair, tel, address, note FROM civils_bcso ORDER BY name ASC');
-                                        $req->execute();
-                                        while ($data = $req->fetch()) {
-                                            echo '<tr>';
-                                            echo '<td>' . $data['name'] . ' ' . $data['firstname'] . '</td>';
-                                            $date = date_create($data['birthdate']);
-                                            echo '<td>' . date_format($date, 'd/m/Y') . '</td>';
-                                            echo '<td>' . $data['skin'] . '</td>';
-                                            echo '<td>' . $data['hair'] . '</td>';
-                                            echo '<td>' . $data['tel'] . '</td>';
-                                            echo '<td>' . $data['address'] . '</td>';
-                                            echo '<td>' . $data['note'] . '</td>';
-
-                                            echo '<td><a href="details_civils_bcso.php?id=' . $data['ID'] . '"><i class="fas fa-eye"></i></a></td>';
-                                        }
-                                        ?>
-                                        
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <ul>
+                            <li>Pistolet</li>
+                            <li>Pistolet en céramique</li>
+                            <li>SNS</li>
+                        </ul>
                     </div>
 
                 </div>
@@ -161,7 +102,7 @@ include('functions/loginverif.php');
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>
@@ -209,6 +150,12 @@ include('functions/loginverif.php');
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
 
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
     <script>

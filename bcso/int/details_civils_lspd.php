@@ -8,29 +8,20 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-$req1 = $bdd->prepare('SELECT * FROM wanted_bcso WHERE ID = ?');
-$req1->execute(array($_GET['id']));
-$req1 = $req1->fetch();
-$date = $req1['datetime'];
-$date = date("d/m/Y H:i", strtotime($date));
-$note = $req1['note'];
-$reason = $req1['reason'];
-$id = $req1['ID'];
-$civilid = $req1['civilid'];
-
-$req = $bdd->prepare('SELECT * FROM civils_bcso WHERE ID = ?');
-$req->execute(array($civilid));
+$req = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+$req->execute(array($_GET['id']));
 $req = $req->fetch();
-$name = $req['name']. " ". $req['firstname'];
+$name = $req['name'];
+$firstname = $req['firstname'];
+$birthdate = $req['birthdate'];
+$birthdate = date('d/m/Y', strtotime($birthdate));
+$tel = $req['tel'];
+$note = $req['note'];
+$picface = $req['picface'];
+$picback = $req['picback'];
+$picright = $req['picright'];
+$id = $req['ID'];
 
-$req2 = $bdd->prepare('SELECT name, firstname FROM members_bcso WHERE ID = ?');
-$req2->execute(array($req1['officier']));
-$req2 = $req2->fetch();
-$officier = $req2['name']. " ". $req2['firstname'];
-
-
-
-//save pictures in a list
 
 ?>
 <!DOCTYPE html>
@@ -44,7 +35,7 @@ $officier = $req2['name']. " ". $req2['firstname'];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Wanted - LSPD</title>
+    <title>Civils - BCSO</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -67,7 +58,7 @@ $officier = $req2['name']. " ". $req2['firstname'];
 </head>
 
 <body id="page-top">
-<?php include ('functions/matomo.php');?>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -77,9 +68,9 @@ $officier = $req2['name']. " ". $req2['firstname'];
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/logo_lspd.png" width="50" height="50">
+                    <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">LSPD</div>
+                <div class="sidebar-brand-text mx-3">BCSO</div>
             </a>
 
             <!-- Divider -->
@@ -111,8 +102,8 @@ $officier = $req2['name']. " ". $req2['firstname'];
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Wanted</h1>
-                    <p class="mb-4">Détails</p>
+                    <h1 class="h3 mb-2 text-gray-800">Civils</h1>
+                    <p class="mb-4">Fiche civil LSPD</p>
                     
 
                     <!-- DataTales Example -->
@@ -124,36 +115,64 @@ $officier = $req2['name']. " ". $req2['firstname'];
                             <!-- show the informations about the person stored in the database -->
                             <label for="name" class="col-sm-2 col-form-label">Nom Prénom</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Nom Prénom" value="<?php  echo $name?>" disabled>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Nom Prénom" value="<?php  echo $name . " " .$firstname;?>" disabled>
                             </div>
-                            <label for="date" class="col-sm-2 col-form-label">Date de publication</label>
+                            <label for="birthdate" class="col-sm-2 col-form-label">Date de naissance</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="date" name="date" placeholder="Date de publication" value="<?php  echo $date;?>"disabled>
+                                <input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="Date de naissance" value="<?php  echo $birthdate;?>"disabled>
                             </div>
-                            <label for="reason" class="col-sm-2 col-form-label">Motif</label>
+                            <label for="phone" class="col-sm-2 col-form-label">Téléphone</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="motif" name="motif" placeholder="Motif" value="<?php  echo $reason;?>"disabled>
-                            </div>
-                            <label for="officier" class="col-sm-2 col-form-label">Officier</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="officier" name="officier" placeholder="officier" value="<?php  echo $officier;?>"disabled>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?php  echo $tel;?>"disabled>
                             </div>
                             <label for="note" class="col-sm-2 col-form-label">Note</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="note" name="note" placeholder="/" value="<?php  echo $note;?>"disabled>
+                                <input type="text" class="form-control" id="note" name="note" value="<?php  echo htmlspecialchars($req['note'])?>" disabled>
                             </div>
-                            <label for="public" class="col-sm-2 col-form-label">Public</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="public" name="public" disabled>
-                                    <option value="1" <?php if($req1['public'] == 1) echo 'selected';?>>Oui</option>
-                                    <option value="0" <?php if($req1['public'] == 0) echo 'selected';?>>Non</option>
-                                </select>
-                            </div>
+
+                            <!-- show pictures stored in the database as base64 in a carousel -->
                             
+                            <!-- center the carousel -->
+                            <div class="card center">
+                            <div id="carouselExampleControls" class="card-body carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <?php
+                                    //display picture if there is one
+                                    if($picface != ""){
+                                        echo '<div class="carousel-item active">
+                                        <img class="d-block w-100" src="'.($picface).'" alt="First slide" height=500px>
+                                        </div>';
+                                    }
+                                    //display picture if there is one
+                                    if($picback != ""){
+                                        echo '<div class="carousel-item">
+                                        <img class="d-block w-100" src="'.($picright).'" alt="Second slide" height=500px>
+                                        </div>';
+                                    }
+                                    //display picture if there is one
+                                    if($picright != ""){
+                                        echo '<div class="carousel-item">
+                                        <img class="d-block w-100" src="'.($picback).'" alt="Third slide" height=500px>
+                                        </div>';
+                                    }
+                                    
+                                    ?>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Précédent</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Suivant</span>
+                                </a>
+                            </div>
+                            </div>
                         </div>
                         <div class="card-footer">
-                            <a href="wanted_bcso.php" class="btn btn-secondary">Retour</a>
-                            <a href="export_wanted_bcso.php?id=<?php echo $id;?>" class="btn btn-success">Exporter</a>
+                            <a href="civils_lspd.php" class="btn btn-secondary">Retour</a>
+                            <a href="export_casier_lspd.php?id=<?php echo $id;?>" class="btn btn-info">Casier judiciaire</a>
+                            <a href="export_civil_lspd.php?id=<?php echo $id;?>" class="btn btn-success">Exporter</a>
                         </div>
                     </div>
 
@@ -167,7 +186,7 @@ $officier = $req2['name']. " ". $req2['firstname'];
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; LSPD - American Stories 2023</span><br>
+                        <span>Copyright &copy; BCSO - American Stories 2023</span><br>
                         <span>Made with <i class="fas fa-heart"></i> by <a href="https://github.com/ethandudu">Ethan D.</a></span>
                     </div>
                 </div>
@@ -216,7 +235,6 @@ $officier = $req2['name']. " ". $req2['firstname'];
     <script src="js/sb-admin-2.min.js"></script>
 
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
-    
 </body>
 
 </html>

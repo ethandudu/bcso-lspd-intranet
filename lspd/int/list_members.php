@@ -219,6 +219,8 @@ include('functions/loginverif.php');
                                             <th>Nom Prénom</th>
                                             <th>Grade</th>
                                             <th>Tel</th>
+                                            <th>Date d'entrée</th>
+                                            <th>Sanction</th>
                                             <th>Division</th>
                                             <th>PPA</th>
                                             <th>Recruteur / Instructeur</th>
@@ -239,6 +241,14 @@ include('functions/loginverif.php');
                                             echo '<td class="text-center">' . $data['name'] . ' ' . $data['firstname'] . '</td>';
                                             echo '<td class="text-center">' . $data['grade'] . '</td>';
                                             echo '<td class="text-center">' . $data['tel'] . '</td>';
+                                            echo '<td class="text-center">' . date("d/m/Y", strtotime($data['entrydate'])) . '</td>';
+                                            if ($data['sanction'] == "Aucune"){
+                                                echo '<td class="text-center"><div style="color: green;">Aucune</div></td>';
+                                            } elseif ($data['sanction'] == "Avertissement"){
+                                                echo '<td class="text-center"><div style="color: orange;">Avertissement</div></td>';
+                                            } elseif ($data['sanction'] == "Blâme"){
+                                                echo '<td class="text-center"><div style="color: red;">Blâme</div></td>';
+                                            }
                                             echo '<td class="text-center">' . $data['division'] . '</td>';
                                             if ($data['ppa'] == 1) {
                                                 echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
@@ -287,6 +297,8 @@ include('functions/loginverif.php');
                                             <th>Nom Prénom</th>
                                             <th>Grade</th>
                                             <th>Tel</th>
+                                            <th>Date d'entrée</th>
+                                            <th>Sanction</th>
                                             <th>Division</th>
                                             <th>PPA</th>
                                             <th>Recruteur / Instructeur</th>
@@ -307,6 +319,14 @@ include('functions/loginverif.php');
                                             echo '<td class="text-center">' . $data['name'] . ' ' . $data['firstname'] . '</td>';
                                             echo '<td class="text-center">' . $data['grade'] . '</td>';
                                             echo '<td class="text-center">' . $data['tel'] . '</td>';
+                                            echo '<td class="text-center">' . date("d/m/Y", strtotime($data['entrydate'])) . '</td>';
+                                            if ($data['sanction'] == 0){
+                                                echo '<td class="text-center"><div style="color: green;">Aucune</div></td>';
+                                            } elseif ($data['sanction'] == 1){
+                                                echo '<td class="text-center"><div style="color: orange;">Avertissement</div></td>';
+                                            } elseif ($data['sanction'] == 2){
+                                                echo '<td class="text-center"><div style="color: red;">Blâme</div></td>';
+                                            }
                                             echo '<td class="text-center">' . $data['division'] . '</td>';
                                             if ($data['ppa'] == 1) {
                                                 echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
