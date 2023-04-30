@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 28 avr. 2023 à 16:33
+-- Généré le : dim. 30 avr. 2023 à 10:52
 -- Version du serveur : 10.6.12-MariaDB-0ubuntu0.22.04.1
 -- Version de PHP : 8.1.2-1ubuntu2.11
 
@@ -20,20 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `intranet_as`
 --
-
--- --------------------------------------------------------
-
---
--- Structure de la table `amendes`
---
-
-CREATE TABLE `amendes` (
-  `ID` int(11) NOT NULL,
-  `type` text DEFAULT NULL,
-  `name` text DEFAULT NULL,
-  `value` int(11) DEFAULT NULL,
-  `other` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -224,6 +210,8 @@ CREATE TABLE `members_lspd` (
   `gradevalue` int(11) DEFAULT NULL,
   `password` text NOT NULL,
   `tel` varchar(14) NOT NULL,
+  `entrydate` date NOT NULL DEFAULT current_timestamp(),
+  `sanction` varchar(13) NOT NULL DEFAULT 'Aucune',
   `pic` tinyint(4) DEFAULT NULL,
   `note` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `division` text DEFAULT 'Aucune',
@@ -337,12 +325,6 @@ CREATE TABLE `wanted_lspd` (
 --
 
 --
--- Index pour la table `amendes`
---
-ALTER TABLE `amendes`
-  ADD PRIMARY KEY (`ID`);
-
---
 -- Index pour la table `casiers_bcso`
 --
 ALTER TABLE `casiers_bcso`
@@ -447,12 +429,6 @@ ALTER TABLE `wanted_lspd`
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
-
---
--- AUTO_INCREMENT pour la table `amendes`
---
-ALTER TABLE `amendes`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `casiers_bcso`
