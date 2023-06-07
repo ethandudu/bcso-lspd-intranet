@@ -8,7 +8,6 @@ $req = $bdd->prepare('SELECT ID, name, firstname, grade, division, dispatch_unit
 $req->execute();
 $members = $req->fetchAll();
 
-header("refresh: 120");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -138,7 +137,7 @@ h1{
       foreach ($dispatch_unit as $unit) {
         echo '<div class="column flex" id="unit-'.$unit['ID'].'">
           <h1>'.$unit['name'].'</h1>';
-        $req3 = $bdd->prepare('SELECT ID, name, firstname, grade, division, dispatch_unit FROM members WHERE dispatch_unit = ? ORDER BY name ASC');
+        $req3 = $bdd->prepare('SELECT ID, name, firstname, grade, division, dispatch_unit FROM members_bcso WHERE dispatch_unit = ? ORDER BY name ASC');
         $req3->execute(array($unit['ID']));
         $members = $req3->fetchAll();
         foreach ($members as $member) {

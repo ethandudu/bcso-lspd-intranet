@@ -18,8 +18,28 @@ if (isset($_POST['submit'])) {
     $note = $_POST['note'];
     $public = $_POST['public'];
 
-    $req = $bdd->prepare('INSERT INTO wanted_bcso (civilid, datetime, reason, officier, note, public) VALUES(?, ?, ?, ?, ?,');
+    $req = $bdd->prepare('INSERT INTO wanted_bcso (civilid, datetime, reason, officier, note, public) VALUES (?, ?, ?, ?, ?, ?)');
     $req->execute(array($civilid,$date2,$crime,$officier,$note,$public));
+    $wantedid = $bdd->lastInsertId();
+
+    $req = $bdd->prepare('SELECT name, firstname FROM civils_bcso WHERE ID = ?');
+    $req->execute(array($civilid));
+    $result = $req->fetch();
+
+    $req = $bdd->prepare('SELECT ID FROM members_bcso WHERE grade = "Sheriff" OR grade = "Sheriff Adjoint" OR grade = "Major" OR grade = "Lieutenant"');
+    $req->execute();
+    $resultbcso = $req->fetchAll();
+
+    $type = "wanted";
+    $sender = $_COOKIE['id'];
+    $text = 'Un nouveau wanted a été émis pour '. $result['name']. " ".$result['firstname'];
+    $datetime = date("Y-m-d H:i:s");
+
+    foreach ($resultbcso as $result) {
+        $receiver = $result['ID'];
+        $req = $bdd->prepare('INSERT INTO notifications_bcso (type, sender, receiver, text, datetime, civilid) VALUES (?, ?, ?, ?, ?, ?)');
+        $req->execute(array($type, $sender, $receiver, $text, $datetime, $wantedid));
+    }
 
     header("Location: wanted.php");
 }

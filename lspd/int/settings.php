@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['submitsettings'])) {
     //get the value of the checkbox recrutement
     if (isset($_POST['recrutement'])) {
         $recrutement = 1;
@@ -17,6 +17,18 @@ if (isset($_POST['submit'])) {
     }
     $req = $bdd->prepare('UPDATE settings SET recrutement_lspd = ?, freq_lspd = ?, freq_lspd_op = ?, freq_ems = ?, freq_harmony = ?, defcon_lspd = ?');
     $req->execute(array($recrutement, $_POST['freq_lspd'], $_POST['freq_lspd_op'], $_POST['freq_ems'], $_POST['freq_harmony'], $_POST['defcon_lspd']));
+}
+
+if (isset($_POST['submitannonce'])) {
+    $annoncetitle = $_POST['title'];
+    $annoncecontent = $_POST['editor'];
+    $reqlistmember = $bdd->prepare('SELECT ID FROM members_lspd');
+    $reqlistmember->execute();
+    $listmember = $reqlistmember->fetchAll();
+    foreach ($listmember as $member) {
+        $req = $bdd->prepare('INSERT INTO messages_lspd (type, sender, receiver, title, text, datetime) VALUES (?, ?, ?, ?, ?, ?)');
+        $req->execute(array('annonce', $_COOKIE['id'], $member['ID'], $annoncetitle, $annoncecontent, date("Y-m-d H:i:s")));
+    }
 }
 
 $req2 = $bdd->prepare('SELECT * FROM settings');
@@ -47,6 +59,7 @@ $settings = $req2->fetch();
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 
 </head>
 
@@ -105,41 +118,55 @@ $settings = $req2->fetch();
                         <div class="card-body">
                             <h1>Recrutement</h1>
                             <form method="post">
-                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
                                 <?php if($settings['recrutement_lspd'] == 1) {
                                     echo '<input type="checkbox" class="custom-control-input" id="recrutement" name="recrutement" checked>';
                                 } else {
                                     echo '<input type="checkbox" class="custom-control-input" id="recrutement" name="recrutement">';} ?>
-                                <label class="custom-control-label" for="recrutement">Activer</label>
-                            </div>
-                            <h1>Fréquences</h1>
-                            <div class="form-group">
-                                <label for="freq_lspd">LSPD</label>
-                                <input type="text" class="form-control" name="freq_lspd" placeholder="Fréquence" value=<?php echo $settings['freq_lspd']; ?>>
-                                <label for="freq_lspd">LSPD OP</label>
-                                <input type="text" class="form-control" name="freq_lspd_op" placeholder="Fréquence" value=<?php echo $settings['freq_lspd_op']; ?>>
-                                <label for="freq_ems">EMS</label>
-                                <input type="text" class="form-control" name="freq_ems" placeholder="Fréquence" value=<?php echo $settings['freq_ems']; ?>>
-                                <label for="freq_harmony">Harmony</label>
-                                <input type="text" class="form-control" name="freq_harmony" placeholder="Fréquence" value=<?php echo $settings['freq_harmony']; ?>>
-                            </div>
+                                    <label class="custom-control-label" for="recrutement">Activer</label>
+                                </div>
+                                <h1>Fréquences</h1>
+                                <div class="form-group">
+                                    <label for="freq_lspd">LSPD</label>
+                                    <input type="text" class="form-control" name="freq_lspd" placeholder="Fréquence" value=<?php echo $settings['freq_lspd']; ?>>
+                                    <label for="freq_lspd">LSPD OP</label>
+                                    <input type="text" class="form-control" name="freq_lspd_op" placeholder="Fréquence" value=<?php echo $settings['freq_lspd_op']; ?>>
+                                    <label for="freq_ems">EMS</label>
+                                    <input type="text" class="form-control" name="freq_ems" placeholder="Fréquence" value=<?php echo $settings['freq_ems']; ?>>
+                                    <label for="freq_harmony">Harmony</label>
+                                    <input type="text" class="form-control" name="freq_harmony" placeholder="Fréquence" value=<?php echo $settings['freq_harmony']; ?>>
+                                </div>
 
-                            <h1>Defcon</h1>
-                            <div class="form-group">
-                                <label for="defcon_lspd">Defcon LSPD</label>
-                                <select class="form-control" name="defcon_lspd">
-                                    <option value="1" <?php if($settings['defcon_lspd'] == 1) { echo 'selected'; } ?>>1</option>
-                                    <option value="2" <?php if($settings['defcon_lspd'] == 2) { echo 'selected'; } ?>>2</option>
-                                    <option value="3" <?php if($settings['defcon_lspd'] == 3) { echo 'selected'; } ?>>3</option>
-                                    <option value="4" <?php if($settings['defcon_lspd'] == 4) { echo 'selected'; } ?>>4</option>
-                                    <option value="5" <?php if($settings['defcon_lspd'] == 5) { echo 'selected'; } ?>>5</option>
-                                </select>
-                            </div>
-                            <br>
-                                <input type="submit" class="btn btn-success" name="submit" value="Sauvegarder">
+                                <h1>Defcon</h1>
+                                <div class="form-group">
+                                    <label for="defcon_lspd">Defcon LSPD</label>
+                                    <select class="form-control" name="defcon_lspd">
+                                        <option value="1" <?php if($settings['defcon_lspd'] == 1) { echo 'selected'; } ?>>1</option>
+                                        <option value="2" <?php if($settings['defcon_lspd'] == 2) { echo 'selected'; } ?>>2</option>
+                                        <option value="3" <?php if($settings['defcon_lspd'] == 3) { echo 'selected'; } ?>>3</option>
+                                        <option value="4" <?php if($settings['defcon_lspd'] == 4) { echo 'selected'; } ?>>4</option>
+                                        <option value="5" <?php if($settings['defcon_lspd'] == 5) { echo 'selected'; } ?>>5</option>
+                                    </select>
+                                </div>
+                                <br>
+                                <input type="submit" class="btn btn-success" name="submitsettings" value="Sauvegarder">
+                            </form>
+                        </div>  
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Annonce</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                <label for="title">Titre</label>
+                                <input type="text" class="form-control" name="title" required>
+                                <label for="content">Contenu</label>
+                                <textarea class="form-control" id="summernote" name="editor"></textarea>
+                                <br>
+                                <input type="submit" class="btn btn-success" name="submitannonce" value="Envoyer">
                             </form>
                         </div>
-                                        
                     </div>
 
                 </div>
@@ -201,6 +228,12 @@ $settings = $req2->fetch();
     <script src="js/sb-admin-2.min.js"></script>
 
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+        $('#summernote').summernote();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </body>
 
 </html>

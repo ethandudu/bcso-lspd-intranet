@@ -9,6 +9,7 @@ setcookie("grade", "", time() - 3600);
 setcookie("name", "", time() - 3600);
 setcookie("firstname", "", time() - 3600);
 setcookie("division", "", time() - 3600);
+setcookie("matricule", "", time() - 3600);
 session_destroy();
 header("Location: ../");
 ?>

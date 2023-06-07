@@ -21,14 +21,30 @@ if (isset($_POST['submit'])) {
 
     $req = $bdd->prepare('INSERT INTO casiers_bcso (civilid, crime, sanction, datetime, officier, note) VALUES (?, ?, ?, ?, ?, ?)');
     $req->execute(array($civilid,$crime,$sanction,$date2,$officier,$note));
+    $casierid = $bdd->lastInsertId();
 
     $req = $bdd->prepare('SELECT name, firstname FROM civils_bcso WHERE ID = ?');
     $req->execute(array($civilid));
     $result = $req->fetch();
 
 
+    $req = $bdd->prepare('SELECT ID FROM members_bcso WHERE grade = "Sheriff" OR grade = "Sheriff Adjoint" OR grade = "Major" OR grade = "Lieutenant"');
+    $req->execute();
+    $resultbcso = $req->fetchAll();
+
+    $text = 'Un nouveau casier a été créé pour '. $result['name']. " ".$result['firstname'];
+    $datetime = date("Y-m-d H:i:s");
+    $type = "casier";
+    $sender = $_COOKIE['id'];
+
+    foreach($resultbcso as $row) {
+        $receiver = $row['ID'];
+        $req = $bdd->prepare('INSERT INTO notifications_bcso (type, sender, receiver, text, datetime, civilid) VALUES (?, ?, ?, ?, ?, ?)');
+        $req->execute(array($type, $sender, $receiver, $text, $datetime, $casierid));
+    }
+    
+
     header("Location: casiers.php");
-    //header("Location: functions/notifs/casiers_notif.php?name=$result[name]&firstname=$result[firstname]&reason=$crime&sanction=$sanction&date=$date");
     }else{
         header("Location: add_casiers.php?error=1");
     }

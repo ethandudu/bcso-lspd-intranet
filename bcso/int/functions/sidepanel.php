@@ -57,6 +57,21 @@ echo '<li class="nav-item active">
 </li>
 
 <li class="nav-item">
+<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefine"
+    aria-expanded="true" aria-controls="collapsefine">
+    <i class="fas fa-fw fa-money-bill-wave"></i>
+    <span>Amendes</span>
+</a>
+<div id="collapsefine" class="collapse" aria-labelledby="headingfine" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="fines.php">Amendes impayées</a>
+        <a class="collapse-item" href="amendes.php">Liste</a>
+    </div>
+</div>
+</li>
+
+
+<li class="nav-item">
 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapselspd"
     aria-expanded="true" aria-controls="collapseinfo">
     <i class="fas fa-fw fa-star"></i>
@@ -77,7 +92,7 @@ echo '<li class="nav-item active">
 
 <!-- Heading -->
 <div class="sidebar-heading">
-Utiles
+    Utiles
 </div>
 
 
@@ -96,7 +111,6 @@ Utiles
         <a class="collapse-item" href="phone.php">Numéros</a>
         <a class="collapse-item" href="saisies.php">Casiers de saisie</a>
         <a class="collapse-item" href="radio.php">Radio</a>
-        <a class="collapse-item" href="weapons.php">Armes</a>
         <a class="collapse-item" href="maps.php">Carte</a>
     </div>
 </div>
@@ -105,6 +119,11 @@ Utiles
     <a class="nav-link" href="procedures.php">
     <i class="fas fa-fw fa-file"></i>
     <span>Procédures</span></a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="weapons.php">
+    <i class="fas fa-fw fa-gun"></i>
+    <span>Armes</span></a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="dispatch.php">

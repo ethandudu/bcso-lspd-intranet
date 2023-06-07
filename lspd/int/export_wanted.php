@@ -97,8 +97,6 @@ $pdf->Cell(43,6,utf8_decode("Date de naissance :"),0,0,'L',0);
 $datetimelocal = new DateTime($civil['birthdate']);
 $birthdate = $datetimelocal->format('d/m/Y');
 $pdf->Cell(40,6,utf8_decode($birthdate),0,1,'L',0);
-$pdf->Cell(43,6,utf8_decode("Adresse :"),0,0,'L',0);
-$pdf->Cell(40,6,utf8_decode($civil['address']),0,1,'L',0);
 $pdf->Cell(43,6,utf8_decode("Note :"),0,0,'L',0);
 if ($civil['note'] == "") {
 	$civil['note'] = "Aucune note";

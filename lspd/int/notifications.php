@@ -123,6 +123,10 @@ include('functions/loginverif.php');
                                                 $data['type'] = 'Wanted';
                                                 $font = 'text-info';
                                                 $url = 'details_wanted.php?id='.$data['civilid'];
+                                            } elseif ($data['type'] == 'fine'){
+                                                $data['type'] = 'Amende';
+                                                $font = 'text-danger';
+                                                $url = 'fines.php';
                                             }
                                             if ($data['markasread'] == 0){
                                                 echo '<tr class="font-weight-bold">';

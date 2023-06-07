@@ -103,6 +103,7 @@ include('functions/loginverif.php');
                                             <th>Saisie</th>
                                             <th>Officier</th>
                                             <th>Date</th>
+                                            <th>Officiers présents</th>
                                             <th>Note</th>
                                             <th>Action</th>
                                         </tr>
@@ -115,6 +116,7 @@ include('functions/loginverif.php');
                                             <th>Saisie</th>
                                             <th>Officier</th>
                                             <th>Date</th>
+                                            <th>Officiers présents</th>
                                             <th>Note</th>
                                             <th>Action</th>
                                         </tr>
@@ -125,7 +127,7 @@ include('functions/loginverif.php');
                                         $req = $bdd->prepare('SELECT * FROM casiers_lspd ORDER BY datetime DESC');
                                         $req->execute();
                                         while ($data = $req->fetch()) {
-                                            $req2 = $bdd->prepare('SELECT * FROM civils_lspd WHERE ID = ?');
+                                            $req2 = $bdd->prepare('SELECT name, firstname FROM civils_lspd WHERE ID = ?');
                                             $req2->execute(array($data['civilid']));
                                             $data2 = $req2->fetch();
                                             echo '<tr>';
@@ -133,13 +135,32 @@ include('functions/loginverif.php');
                                             echo '<td>' . $data['crime'] . '</td>';
                                             echo '<td>' . $data['sanction'] . '</td>';
                                             echo '<td>' . $data['saisie'] . '</td>';
-                                            $req2 = $bdd->prepare('SELECT * FROM members_lspd WHERE ID = ?');
+                                            $req2 = $bdd->prepare('SELECT name, firstname, matricule FROM members_lspd WHERE ID = ?');
                                             $req2->execute(array($data['officier']));
                                             $data2 = $req2->fetch();
                                             echo '<td>'. $data2['matricule']. ' ' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
                                             #convert $data['datetime'] to french datime format
                                             $date2 = date("d/m/Y H:i", strtotime($data['datetime']));
                                             echo '<td>' . $date2 . '</td>';
+                                            // extract the json data and search for the id in members_lspd
+                                            if ($data['officiers_presents'] == "" OR $data['officiers_presents'] == "[]" OR $data['officiers_presents'] == NULL) {
+                                                $officiers = 'Aucun';
+                                            } else {
+                                                $json = json_decode($data['officiers_presents'], true);
+                                                foreach ($json as $key => $value) {
+                                                    $req2 = $bdd->prepare('SELECT matricule FROM members_lspd WHERE ID = ?');
+                                                    $req2->execute(array($value));
+                                                    $data2 = $req2->fetch();
+                                                    //check if the officer is still in the database
+                                                    if ($data2['matricule'] != "") {
+                                                        $officiers .= $data2['matricule'].'<br>';
+                                                    }
+                                                }
+                                            }
+                                            
+
+                                            echo '<td>' . $officiers . '</td>';
+                                            $officiers = "";
                                             echo '<td>' . $data['note'] . '</td>';
                                             echo '<td> <a href="edit_casiers.php?id=' . $data['ID'] . '"><i class="fas fa-edit"></i></a> <a href="delete_casiers.php?id=' . $data['ID'] . '"><i class="fas fa-trash-alt"></i></a></td>';
                                             

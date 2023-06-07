@@ -20,11 +20,11 @@
     height: 65%;
 }
 
-#btn {
+.btn-calc {
     background-color: #fb0066;
 }
 
-input[type=button] {
+.btn-calc[type=button] {
     font-family: 'Orbitron', sans-serif;
     background-color: #c4c3da;
     color: black;
@@ -35,7 +35,7 @@ input[type=button] {
     outline: none;
 }
 
-input:active[type=button] {
+.btn-calc:active[type=button] {
     background: #e5e5e5;
     -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;

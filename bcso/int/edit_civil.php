@@ -18,9 +18,9 @@ if (isset($_POST['submit'])) {
     $address = $_POST['address'];
     $note = $_POST['note'];
     $id = $_GET['id'];
-    $picface = $_POST['picface'];
-    $picback = $_POST['picback'];
-    $picright = $_POST['picright'];
+    $picface = $_POST['img1'];
+    $picback = $_POST['img2'];
+    $picright = $_POST['img3'];
 
     $req = $bdd->prepare('UPDATE civils_bcso SET birthdate = ?, skin = ?, hair = ?, tel = ?, address = ?, picface = ?, picback = ?, picright = ?, note = ? WHERE ID = ?');
     $req->execute(array($birthdate, $skin, $hair, $tel, $address, $picface, $picback, $picright, $note, $id));

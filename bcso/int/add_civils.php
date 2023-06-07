@@ -28,6 +28,22 @@ if (isset($_POST['submit'])) {
 
     $req = $bdd->prepare('INSERT INTO civils_bcso (name, firstname, birthdate, skin, hair, tel, address, picface, picback, picright, note) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
     $req->execute(array($name, $firstname, $birthdate, $skin, $hair, $phone, $address, $img1, $img2, $img3, $note));
+    $civilid = $bdd->lastInsertId();
+
+    $type = "civil";
+    $sender = $_COOKIE['id'];
+    $text = 'Une nouvelle fiche civil a été créée pour '. $name. " ".$firstname;
+    $datetime = date("Y-m-d H:i:s");
+
+    $req = $bdd->prepare('SELECT ID FROM members_bcso WHERE grade = "Sheriff" OR grade = "Sheriff Adjoint" OR grade = "Major" OR grade = "Lieutenant"');
+    $req->execute();
+    $resultbcso = $req->fetchAll();
+
+    foreach($resultbcso as $row) {
+        $receiver = $row['ID'];
+        $req = $bdd->prepare('INSERT INTO notifications_bcso (type, sender, receiver, text, datetime, civilid) VALUES (?, ?, ?, ?, ?, ?)');
+        $req->execute(array($type, $sender, $receiver, $text, $datetime, $civilid));
+    }
 
     header("Location: civils.php");
     //header("Location: functions/notifs/civils_notif.php?name=$name&firstname=$firstname&birthdate=$birthdate&address=$address&phone=$phone&hair=$hair&skin=$skin");

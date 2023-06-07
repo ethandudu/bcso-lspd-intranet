@@ -6,7 +6,7 @@ $type = $_POST['type'];
 if ($type == "update_dispatch"){
     $ID = $_POST['id'];
     $unit = $_POST['unit'];
-    $req = $bdd->prepare('UPDATE members SET dispatch_units_bcso = ? WHERE ID = ?');
+    $req = $bdd->prepare('UPDATE members_bcso SET dispatch_unit = ? WHERE ID = ?');
     $req->execute(array($unit, $ID));
     echo $unit . " " . $ID;
 }
@@ -30,7 +30,7 @@ if ($type == "delete"){
     $ID = $_POST['id'];
     $req = $bdd->prepare('DELETE FROM dispatch_units_bcso WHERE ID = ?');
     $req->execute(array($ID));
-    $req = $bdd->prepare('UPDATE members_bcso SET dispatch_units_bcso = 0 WHERE dispatch_unit = ?');
+    $req = $bdd->prepare('UPDATE members_bcso SET dispatch_unit = 0 WHERE dispatch_unit = ?');
     $req->execute(array($ID));
     echo "success";
 }

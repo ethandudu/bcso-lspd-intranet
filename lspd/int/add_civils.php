@@ -16,15 +16,20 @@ if (isset($_POST['submit'])) {
     $birthdate = $_POST['inputBirthdate'];
     $birthdate = date('Y-m-d', strtotime($birthdate));
     $phone = $_POST['inputPhone'];
+    $job = $_POST['inputJob'];
     $note = $_POST['note'];
     $img1 = $_POST['img1'];
     $img2 = $_POST['img2'];
     $img3 = $_POST['img3'];
+    
+    if ($job == ""){
+        $job = "Chômeur";
+    }
 
 
 
-    $req = $bdd->prepare('INSERT INTO civils_lspd (name, firstname, birthdate, tel, picface, picback, picright, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-    $req->execute(array($name, $firstname, $birthdate, $phone, $img1, $img2, $img3, $note));
+    $req = $bdd->prepare('INSERT INTO civils_lspd (name, firstname, birthdate, tel, picface, picback, picright, note, job) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $req->execute(array($name, $firstname, $birthdate, $phone, $img1, $img2, $img3, $note, $job));
     //get the last inserted id
     $civilid = $bdd->lastInsertId();
 
@@ -38,7 +43,6 @@ if (isset($_POST['submit'])) {
     $req->execute(array($type, $sender, $receiver, $text, $datetime, $civilid));
 
     header("Location: civils.php");
-    //header("Location: functions/notifs/civils_notif.php?name=$name&firstname=$firstname&birthdate=$birthdate&address=$address&phone=$phone&hair=$hair&skin=$skin");
 }
 
 ?>
@@ -139,6 +143,10 @@ if (isset($_POST['submit'])) {
                                     <label for="inputPhone" class="col-sm-2 col-form-label">Téléphone</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="(555) 1234-567" maxlength="14">
+                                    </div>
+                                    <label for="inputJob" class="col-sm-2 col-form-label">Profession</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputJob" name="inputJob" placeholder="Profession">
                                     </div>
                                     <label for="img1" class="col-sm-2 col-form-label">Photo de face</label>
                                     <div class="col-sm-10">

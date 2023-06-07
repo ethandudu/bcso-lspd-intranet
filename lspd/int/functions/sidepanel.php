@@ -59,6 +59,20 @@ echo '<li class="nav-item active">
 </li>
 
 <li class="nav-item">
+<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefine"
+    aria-expanded="true" aria-controls="collapsefine">
+    <i class="fas fa-fw fa-money-bill-wave"></i>
+    <span>Amendes</span>
+</a>
+<div id="collapsefine" class="collapse" aria-labelledby="headingfine" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="amendes.php">Liste</a>
+        <a class="collapse-item" href="fines.php">Amendes impayées</a>
+    </div>
+</div>
+</li>
+
+<li class="nav-item">
 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsebcso"
     aria-expanded="true" aria-controls="collapseinfo">
     <i class="fas fa-fw fa-star"></i>
@@ -96,7 +110,6 @@ Utiles
         <a class="collapse-item" href="reglement.php">Règlement / Manuel</a>
         <a class="collapse-item" href="codepenal.php">Code pénal</a>
         <a class="collapse-item" href="miranda.php">Droits Miranda</a>
-        <a class="collapse-item" href="amendes.php">Amendes</a>
         <a class="collapse-item" href="saisies.php">Casiers de saisie</a>
         <a class="collapse-item" href="radio.php">Radio</a>
         <a class="collapse-item" href="codes.php">10-Codes / Alphabet</a>
@@ -109,7 +122,11 @@ Utiles
     <i class="fas fa-fw fa-file"></i>
     <span>Procédures</span></a>
 </li>
-
+<li class="nav-item">
+    <a class="nav-link" href="weapons.php">
+    <i class="fas fa-fw fa-gun"></i>
+    <span>Armes</span></a>
+</li>
 
 <hr class="sidebar-divider d-none d-md-block">';
 

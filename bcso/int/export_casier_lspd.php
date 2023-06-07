@@ -91,7 +91,11 @@ while ($casier = array_shift($casiers)) {
 	$reqofficer = $bdd -> prepare("SELECT name, firstname FROM members_lspd WHERE ID = ?");
 	$reqofficer -> execute(array($casier['officier']));
 	$officer = $reqofficer -> fetch();
-	$officer = $officer['name'];
+	if ($reqofficer -> rowCount() == 0) {
+		$officer = "Inconnu";
+	} else {
+		$officer = $officer['firstname']. " " .$officer['name'];
+	}
 	$datetimelocal = new DateTime($casier['datetime']);
 	$casier['datetime'] = $datetimelocal -> format('d/m/Y à H:i');
 	$pdf->Row(array(utf8_decode($casier['crime']),utf8_decode($casier['sanction']),utf8_decode($officer),utf8_decode($casier['datetime'])));

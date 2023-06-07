@@ -83,13 +83,83 @@ include('functions/loginverif.php');
                     <!-- list of weapons -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Armes autorisées avec PPA</h6>
+                        <p><label>Rechercher un numéro de série :
+                            <input id="myInput" type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable" onkeyup="myFunction()">
+                        </label></p>
+                            <input type="button" class="btn btn-success" value="Ajouter une arme" data-toggle="modal" data-target="#addWeaponModal">
+                            <input type="button" class="btn btn-warning" value="Modifier une arme" data-toggle="modal" data-target="#editWeaponModal">
+                            <input type="button" class="btn btn-danger" value="Supprimer une arme" data-toggle="modal" data-target="#deleteWeaponModal">
                         </div>
-                        <ul>
-                            <li>Pistolet</li>
-                            <li>Pistolet en céramique</li>
-                            <li>SNS</li>
-                        </ul>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Nom Prénom</th>
+                                            <th>Arme</th>
+                                            <th>Numéro de série</th>
+                                            <th>Date d'enregistrement</th>
+                                            <th>Saisie</th>
+                                            <th>Officier</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Nom Prénom</th>
+                                            <th>Arme</th>
+                                            <th>Numéro de série</th>
+                                            <th>Date d'enregistrement</th>
+                                            <th>Saisie</th>
+                                            <th>Officier</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!-- get infos from database -->
+                                        <?php
+                                        $req = $bdd->prepare('SELECT * FROM weapons ORDER BY name, firstname ASC');
+                                        $req->execute();
+                                        while ($data = $req->fetch()) {
+                                            echo '<tr>';
+                                            echo '<td>' . $data['name'] . ' ' . $data['firstname'] . '</td>';
+                                            echo '<td>' . $data['weapon_type'] . '</td>';
+                                            echo '<td>' . $data['serialnumber'] . '</td>';
+                                            echo '<td>' . date("d/m/Y", strtotime($data['datetime'])) . '</td>';
+                                            if ($data['saisie'] == 1) {
+                                                echo '<td><span class="badge badge-danger">Oui</span></td>';
+                                            } else {
+                                                echo '<td><span class="badge badge-success">Non</span></td>';
+                                            }
+                                            if ($data['officier_type'] == "LSPD"){
+                                                $req2 = $bdd->prepare('SELECT matricule, name, firstname FROM members_lspd WHERE ID = ?');
+                                                $req2->execute(array($data['officier']));
+                                                $data2 = $req2->fetch();
+                                                echo '<td>' . $data2['matricule'] . ' - ' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
+                                            } else {
+                                                $req2 = $bdd->prepare('SELECT name, firstname FROM members_bcso WHERE ID = ?');
+                                                $req2->execute(array($data['officier']));
+                                                $data2 = $req2->fetch();
+                                                echo '<td>' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="text-primary">Armes autorisées avec le PPA</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>Pistolet</li>
+                                    <li>Pistolet en céramique</li>
+                                    <li>SNS</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -139,7 +209,157 @@ include('functions/loginverif.php');
             </div>
         </div>
     </div>
+    <div class="modal fade" id="addWeaponModal" tabindex="-1" role="dialog" aria-labelledby="addWeaponModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="addWeaponModal" id="exampleModalLabel">Ajouter une arme</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="name">Nom</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nom">
+                    <label for="firstname">Prénom</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Prénom">
+                    <label for="weapon_type">Type d'arme</label>
+                    <input type="text" class="form-control" id="weapon_type" name="weapon_type" placeholder="Type d'arme">
+                    <label for="serialnumber">Numéro de série</label>
+                    <input type="text" class="form-control" id="serialnumber" name="serialnumber" placeholder="Numéro de série">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                    <button class="btn btn-primary btn-success" type="button" onclick="addweapon()">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteWeaponModal" tabindex="-1" role="dialog" aria-labelledby="removeWeaponModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="removeWeaponModal" id="exampleModalLabel">Supprimer une arme</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="sn2">Numéro de série</label>
+                    <select class="form-control" id="sn2" name="sn2">
+                        <?php
+                        $req = $bdd->prepare('SELECT * FROM weapons');
+                        $req->execute();
+                        while ($data = $req->fetch()) {
+                            echo '<option value="' . $data['serialnumber'] . '">' . $data['serialnumber'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                    <button class="btn btn-primary btn-success" type="button" onclick="deleteweapon()">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editWeaponModal" tabindex="-1" role="dialog" aria-labelledby="editWeaponModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="editWeaponModal" id="exampleModalLabel">Supprimer une arme</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="sn3">Numéro de série</label>
+                    <select class="form-control" id="sn3" name="sn3" onchange="loadweapon()">
+                        <?php
+                        $req = $bdd->prepare('SELECT serialnumber FROM weapons');
+                        $req->execute();
+                        while ($data = $req->fetch()) {
+                            echo '<option value="' . $data['serialnumber'] . '">' . $data['serialnumber'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                    <label for="name2">Nom</label>
+                    <input type="text" class="form-control" id="name2" name="name2" placeholder="Nom">
+                    <label for="firstname2">Prénom</label>
+                    <input type="text" class="form-control" id="firstname2" name="firstname2" placeholder="Prénom">
+                    <label for="weapon_type2">Type d'arme</label>
+                    <input type="text" class="form-control" id="weapon_type2" name="weapon_type2" placeholder="Type d'arme">
+                    <label for="saisie2">Saisie</label>
+                    <div class="custom-control custom-checkbox">
+                        <label class="custom-control-label" for="customCheck1">Oui</label>
+                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                    <button class="btn btn-primary btn-success" type="button" onclick="editweapon()">Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        function addweapon(){
+            var type = "add";
+            var name = document.getElementById('name').value;
+            var firstname = document.getElementById('firstname').value;
+            var weapon_type = document.getElementById('weapon_type').value;
+            var serialnumber = document.getElementById('serialnumber').value;
+            $.ajax({
+                url: 'functions/weaponsfunction.php',
+                type: 'POST',
+                data: {
+                    type: type,
+                    name: name,
+                    firstname: firstname,
+                    weapon_type: weapon_type,
+                    serialnumber: serialnumber,
+                    officier: <?php echo $_COOKIE['id']; ?>
+                },
+                success: function(data) {
+                    alert("Arme ajoutée !");
+                    location.reload();
+                }
+            });
+        }
+
+        function deleteweapon(){
+            var type = "delete";
+            var serialnumber2 = document.getElementById('sn2').value;
+            $.ajax({
+                url: 'functions/weaponsfunction.php',
+                type: 'POST',
+                data: {
+                    type: type,
+                    serialnumber: serialnumber2
+                },
+                success: function(data) {
+                    alert("Arme supprimée !");
+                    location.reload();
+                }
+            });
+        }
+
+        function loadweapon(){
+            var type = "load";
+            var serialnumber = document.getElementById('sn3').value;
+            $.ajax({
+                url: 'functions/weaponsfunction.php',
+                type: 'POST',
+                data: {
+                    type: type,
+                    serialnumber: serialnumber
+                },
+                success: function(data) {
+                    var weapon = JSON.parse(data);
+                    document.getElementById('name2').value = weapon.name;
+                    document.getElementById('firstname2').value = weapon.firstname;
+                    document.getElementById('weapon_type2').value = weapon.weapon_type;
+                    if (weapon.saisie == 1) {
+                        document.getElementById('customCheck1').checked = true;
+                    } else {
+                        document.getElementById('customCheck1').checked = false;
+                    }
+                }
+            })
+        }
+    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -149,13 +369,6 @@ include('functions/loginverif.php');
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
 
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
     <script>
@@ -169,7 +382,7 @@ function myFunction() {
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
+    td = tr[i].getElementsByTagName("td")[2];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {

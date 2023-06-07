@@ -2,6 +2,9 @@
 ini_set('session.gc_maxlifetime', 3600*24);
 session_set_cookie_params(3600*24);
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 include('../config.php');
 
@@ -17,6 +20,7 @@ if (isset($_COOKIE["userconnect"]) && isset($_COOKIE["mdpconnect"])){
 		setcookie("name", $_COOKIE["name"], time() + 24*3600);
 		setcookie("firstname", $_COOKIE["firstname"], time() + 24*3600);
 		setcookie("division", $_COOKIE["division"], time() + 24*3600);
+		setcookie("matricule", $_COOKIE["matricule"], time() + 24*3600);
 		header("Location: index.php");
 	}
 }
@@ -100,7 +104,7 @@ if (isset($_POST['formconnexion'])) {
 			      			<label class="form-control-placeholder" for="username">Nom d'utilisateur</label>
 			      		</div>
 		            	<div class="form-group">
-		              		<input id="password-field" type="password" class="form-control" name="mdpconnect" value="<?php echo $_COOKIE["mdpconnect"]?>" required>
+		              		<input id="password-field" type="password" class="form-control" name="mdpconnect" value="" required>
 		              		<label class="form-control-placeholder" for="password">Mot de passe</label>
 		              		<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 		            	</div>

@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
     $req->execute(array($matricule, $name, $firstname, $tel, $username, $grade, $gradevalue, $passwordhashed));
     $memberid = $bdd->lastInsertId();
 
-    $stat = "Identifiants pour le compte de " . $name . " " . $firstname . " : " . $username . " / " . $password;
+    $stat = "Identifiants pour le compte de " . $name . " " . $firstname . " : " . $username . " / " . $password . " / https://lspd.ethanduault.fr";
 
     $type = "member";
     $sender = $_COOKIE['id'];
@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
     $text = "L'agent ". $matricule .' '.$name. " ".$firstname." a été créé";
     $datetime = date("Y-m-d H:i:s");
 
-    $req = $bdd->prepare('INSERT INTO notifications (type, sender, receiver, text, datetime, civilid) VALUES(?, ?, ?, ?, ?, ?)');
+    $req = $bdd->prepare('INSERT INTO notifications_lspd (type, sender, receiver, text, datetime, civilid) VALUES(?, ?, ?, ?, ?, ?)');
     $req->execute(array($type, $sender, $receiver, $text, $datetime, $memberid));
 
 }
@@ -193,10 +193,11 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <button type="submit" class="btn btn-success" name="submit">Ajouter</button>
                                 <!-- show the $stat variable in green if set -->
-                                <?php if(isset($stat)) {
-                                    echo '<div class="alert alert-success" role="alert">'.$stat.'</div>';
-                                }
-                                    ?>
+                                <?php
+                                    if(isset($stat)) {
+                                        echo '<div class="alert alert-success" role="alert">'.$stat.' <button type="button" class="btn btn-primary" onclick="copyToClipboard(\''.$stat.'\')">Copier</button></div>';
+                                    }
+                                ?>
                             </form>
                         </div>
                     </div>
@@ -261,6 +262,18 @@ if (isset($_POST['submit'])) {
 
 
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
+    <script>
+        function copyToClipboard(text) {
+            var dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            alert("Copié !");
+        }
+    </script>
 </body>
 
 </html>

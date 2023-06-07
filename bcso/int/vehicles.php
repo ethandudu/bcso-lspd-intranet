@@ -3,9 +3,6 @@ session_start();
 include('../config.php');
 include('functions/adminverif.php');
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 include('functions/loginverif.php');
 
@@ -113,6 +110,7 @@ include('functions/loginverif.php');
                                                 <option value="Vic">Vic</option>
                                                 <option value="Policeb">Moto</option>
                                                 <option value="VapidTarv">Vapid Tarv</option>
+                                                <option value="Leosilv">Silverado</option>
                                             </select>
                                         </div>
                                         <div class="modal-footer">

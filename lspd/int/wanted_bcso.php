@@ -2,9 +2,7 @@
 session_start();
 include('../config.php');
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 
 include('functions/loginverif.php');
 
@@ -134,6 +132,10 @@ include('functions/loginverif.php');
                                             $req2 = $bdd->prepare('SELECT name, firstname FROM members_bcso WHERE ID = ?');
                                             $req2->execute(array($data['officier']));
                                             $data2 = $req2->fetch();
+                                            if ($data2['name'] == "") {
+                                                $data2['name'] = "Inconnu";
+                                                $data2['firstname'] = "";
+                                            }
                                             echo '<td>' . $data2['name'] . ' ' . $data2['firstname'] . '</td>';
                                             echo '<td class="text-center"><a href="details_wanted_bcso.php?id=' . $data['ID'] . '"><i class="fas fa-eye"></i></a></td>';
                                         }

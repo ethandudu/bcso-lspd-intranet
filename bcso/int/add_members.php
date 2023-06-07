@@ -25,15 +25,37 @@ if (isset($_POST['submit'])) {
     $tel = $_POST['inputPhone'];
     $username = $name.$firstname;
     $username = strtolower($username);
+    $username = preg_replace('/\s+/', '', $username);
+    //truncate accents
+    $username = str_replace(
+        array('à', 'â', 'ä', 'á', 'ã', 'å', 'ª', 'À', 'Â', 'Ä', 'Á', 'Ã', 'Å'),
+        array('a', 'a', 'a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A', 'A', 'A'),
+        $username
+    );
     $grade = $_POST['inputGrade'];
     $password = generatepassword();
     $passwordhashed = hash('sha256', $password);
+    $stat = "Identifiants pour le compte de " . $name . " " . $firstname . " : " . $username . " / " . $password ." https://bcso.ethanduault.fr";
 
 
     $req = $bdd->prepare('INSERT INTO members_bcso (name, firstname, tel, username, grade, password) VALUES(?, ?, ?, ?, ?, ?)');
     $req->execute(array($name, $firstname, $tel, $username, $grade, $passwordhashed));
+    $memberid = $bdd->lastInsertId();
 
-    $stat = "Identifiants pour le compte de " . $name . " " . $firstname . " : " . $username . " / " . $password;
+    $type = "member";
+    $sender = $_COOKIE['id'];
+    $text = "L'agent ".$name. " ".$firstname." a été créé";
+    $datetime = date("Y-m-d H:i:s");
+
+    $req = $bdd->prepare('SELECT ID FROM members_bcso WHERE grade = "Sheriff" OR grade = "Sheriff Adjoint" OR grade = "Major" OR grade = "Lieutenant"');
+    $req->execute();
+    $resultbcso = $req->fetchAll();
+
+    foreach ($resultbcso as $row) {
+        $receiver = $row['ID'];
+        $req2 = $bdd->prepare('INSERT INTO notifications_bcso (type, sender, receiver, text, datetime, civilid) VALUES(?, ?, ?, ?, ?, ?)');
+        $req2->execute(array($type, $sender, $receiver, $text, $datetime, $memberid));
+    }
 }
 
 ?>
@@ -148,10 +170,11 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <button type="submit" class="btn btn-success" name="submit">Ajouter</button>
                                 <!-- show the $stat variable in green if set -->
-                                <?php if(isset($stat)) {
-                                    echo '<div class="alert alert-success" role="alert">'.$stat.'</div>';
-                                }
-                                    ?>
+                                <?php
+                                    if(isset($stat)) {
+                                        echo '<div class="alert alert-success" role="alert">'.$stat.' <button type="button" class="btn btn-primary" onclick="copyToClipboard(\''.$stat.'\')">Copier</button></div>';
+                                    }
+                                ?>
                             </form>
                         </div>
                     </div>
@@ -216,6 +239,19 @@ if (isset($_POST['submit'])) {
 
 
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
+
+    <script>
+        function copyToClipboard(text) {
+            var dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            alert("Copié !");
+        }
+    </script>
 </body>
 
 </html>

@@ -16,6 +16,7 @@ $firstname = $req['firstname'];
 $birthdate = $req['birthdate'];
 $birthdate = date('d/m/Y', strtotime($birthdate));
 $tel = $req['tel'];
+$job = $req['job'];
 $note = $req['note'];
 $picface = $req['picface'];
 $picback = $req['picback'];
@@ -123,6 +124,10 @@ $id = $req['ID'];
                             <label for="phone" class="col-sm-2 col-form-label">Téléphone</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?php  echo $tel;?>"disabled>
+                            </div>
+                            <label for="job" class="col-sm-2 col-form-label">Métier</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="job" name="job" placeholder="" value="<?php  echo $job;?>" disabled>
                             </div>
                             <label for="note" class="col-sm-2 col-form-label">Note</label>
                             <div class="col-sm-10">

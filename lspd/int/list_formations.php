@@ -101,6 +101,7 @@ include('functions/loginverif.php');
                                             <th>Tel</th>
                                             <th>Division</th>
                                             <th>PPA</th>
+                                            <th>PPA 2</th>
                                             <th>Recruteur / Instructeur</th>
                                             <th>Dispatcheur</th>
                                             <th>Stage conduite sécurité</th>
@@ -120,6 +121,11 @@ include('functions/loginverif.php');
                                             echo '<td class="text-center">' . $data['tel'] . '</td>';
                                             echo '<td class="text-center">' . $data['division'] . '</td>';
                                             if ($data['ppa'] == 1) {
+                                                echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['ppa2'] == 1) {
                                                 echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';
@@ -167,6 +173,7 @@ include('functions/loginverif.php');
                                             <th>Tel</th>
                                             <th>Division</th>
                                             <th>PPA</th>
+                                            <th>PPA 2</th>
                                             <th>Recruteur / Instructeur</th>
                                             <th>Dispatcheur</th>
                                             <th>Stage conduite sécurité</th>
@@ -186,6 +193,11 @@ include('functions/loginverif.php');
                                             echo '<td class="text-center">' . $data['tel'] . '</td>';
                                             echo '<td class="text-center">' . $data['division'] . '</td>';
                                             if ($data['ppa'] == 1) {
+                                                echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['ppa2'] == 1) {
                                                 echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';

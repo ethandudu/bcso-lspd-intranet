@@ -184,8 +184,12 @@ include('functions/loginverif.php');
                                <ul>
                                     <li>1599 : Papiers d'identité</li>
                                     <li>1600 : Argent sale</li>
-                                    <li>1601 : Commun BCSO</li>
+                                    <li>1601 : Nourriture BCSO</li>
                                     <li>1602 : Boissons BCSO</li>
+                                    <li>1603 : Commun BCSO</li>
+                                    <li>1604 : SMG HS + Kits de réparation</li>
+                                    <li>1605 : GPB</li>
+                                    <li>1606 : Armes BCSO</li>
                                 </ul>
                             </div>
                         </div>

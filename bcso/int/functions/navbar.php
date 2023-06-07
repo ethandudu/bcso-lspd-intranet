@@ -35,65 +35,109 @@ echo '<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-
         </div>
     </li>';
 
-    /*<!-- Nav Item - Alerts -->
+    $reqnotif = $bdd->prepare('SELECT * FROM notifications_bcso WHERE receiver = ? AND markasread = 0 ORDER BY datetime DESC');
+    $reqnotif->execute(array($_COOKIE['id']));
+    $data = $reqnotif->fetchAll();
+    $count = $reqnotif->rowCount();
+    echo '<!-- Nav Item - Alerts -->
     <li class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
             <!-- Counter - Alerts -->
-            <span class="badge badge-info badge-counter">0</span>
+            <span class="badge badge-info badge-counter">'.$count.'</span>
         </a>
         <!-- Dropdown - Alerts -->
-        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-            aria-labelledby="alertsDropdown">
-            <h6 class="dropdown-header">
-                Notifications
-            </h6>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="mr-3">
-                    <div class="icon-circle bg-info">
-                        <i class="fas fa-star text-white"></i>
-                    </div>
-                </div>
-                <div>
-                    <div class="small text-gray-500">12 Janvier 2023</div>
-                    <span class="">Bienvenue sur l\'intranet BCSO</span>
-                </div>
-            </a>
-            <a class="dropdown-item text-center small text-gray-500" href="#">Voir toutes les alertes</a>
+        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown"';
+        if ($count > 2) {
+            echo 'style="max-height: 550px; overflow-y: scroll;"';
+        }
+        echo'>
+            <h6 class="dropdown-header">Notifications</h6>';
+            if ($count > 0) {
+                foreach ($data as $notif){
+                    echo '<a class="dropdown-item d-flex align-items-center"><div class="mr-3">';
+                        if ($notif['type'] == "civil"){
+                            echo '<div class="icon-circle bg-success"><i class="fas fa-book text-white"></i></div>';
+                        }
+                        elseif ($notif['type'] == "casier"){
+                            echo '<div class="icon-circle bg-warning"><i class="fas fa-folder-open text-white"></i></div>';
+                        }elseif ($notif['type'] == "wanted"){
+                            echo '<div class="icon-circle bg-info"><i class="fas fa-handcuffs text-white"></i></div>';
+                        }elseif ($notif['type'] == "member"){
+                            echo '<div class="icon-circle bg-primary"><i class="fas fa-user text-white"></i></div>';
+                        }
+                        echo '</div>
+                        <div>
+                            <div class=" text-gray-500">'. date("d/m/Y H:i", strtotime($notif['datetime'])).'</div>
+                            <span class="">'. htmlspecialchars($notif['text']).'</span>
+                        </div>
+                    </a>';
+                }
+            }else{
+                echo '<a class="dropdown-item d-flex align-items-center"><div class="mr-3">
+                <div><span class="">Aucune notification non lue</span></div></div>
+                </a>';
+            }
+        echo '<a class="dropdown-item text-center small text-gray-500" href="notifications.php">Voir toutes les alertes</a>
         </div>
-    </li>
+    </li>';
 
-    <!-- Nav Item - Messages -->
+    $reqmessage = $bdd->prepare('SELECT * FROM messages_bcso WHERE receiver = ? AND markasread = 0 ORDER BY datetime DESC');
+    $reqmessage->execute(array($_COOKIE['id']));
+    $datamessage = $reqmessage->fetchAll();
+    $countmessage = $reqmessage->rowCount();
+
+    echo '<!-- Nav Item - Messages -->
     <li class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-envelope fa-fw"></i>
             <!-- Counter - Messages -->
-            <span class="badge badge-info badge-counter">0</span>
+            <span class="badge badge-info badge-counter">'.$countmessage.'</span>
         </a>
         <!-- Dropdown - Messages -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
             aria-labelledby="messagesDropdown">
-            <h6 class="dropdown-header">
-                Messages
-            </h6>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                        alt="...">
-                    <div class="status-indicator bg-success"></div>
-                </div>
-                <div class="font-weight-bold">
-                    <div class="text-truncate">Comming Soon</div>
-                    <div class="small text-gray-500">Admin · 0m</div>
-                </div>
-            </a>
-            <a class="dropdown-item text-center small text-gray-500" href="#">Voir tous les messages</a>
+            <h6 class="dropdown-header">Messages</h6>';
+            if ($countmessage > 0) {
+                foreach ($datamessage as $message){
+                    echo '<a class="dropdown-item d-flex align-items-center"><div class="mr-3">';
+                        if ($message['type'] == "annonce"){
+                            echo '<div class="icon-circle bg-warning"><i class="fas fa-bullhorn text-white"></i></div>';
+                        }elseif ($message['type'] == "message"){
+                            echo '<div class="icon-circle bg-primary"><i class="fas fa-envelope text-white"></i></div>';
+                        }
+                        if ($message['sender_type'] == "LSPD"){
+                            $sendername = $bdd->prepare('SELECT ID, name, firstname FROM members_lspd WHERE ID = ?');
+                            $sendername->execute(array($message['sender']));
+                            $sendername = $sendername->fetch();
+                        }elseif ($message['sender_type'] == "BCSO"){
+                            $sendername = $bdd->prepare('SELECT ID, name, firstname FROM members_bcso WHERE ID = ?');
+                            $sendername->execute(array($message['sender']));
+                            $sendername = $sendername->fetch();
+                        }
+                        echo '</div>
+                        <div>
+                            <div class=" text-gray-500">'. $sendername['name']. " ". $sendername['firstname'] ." " . date("d/m/Y H:i", strtotime($message['datetime'])).'</div>
+                            <div class="font-weight-bold">
+                                <div class="text-truncate">'. htmlspecialchars($message['title']).'</div>
+                            </div>
+                            <span class="">'. ($message['text']).'</span>
+                        </div>
+                    </a>';
+                }
+            }else{
+                echo '<a class="dropdown-item d-flex align-items-center"><div class="mr-3">
+                <div><span class="">Aucun message non lu</span></div></div>
+                </a>';
+            }
+            
+            echo '<a class="dropdown-item text-center small text-gray-500" href="messages.php">Voir tous les messages</a>
         </div>
-    </li>
+    </li>';
 
-    <div class="topbar-divider d-none d-sm-block"></div>*/
+    echo '<div class="topbar-divider d-none d-sm-block"></div>';
 
     echo '<!-- Nav Item - User Information -->
     <li class="nav-item dropdown no-arrow">

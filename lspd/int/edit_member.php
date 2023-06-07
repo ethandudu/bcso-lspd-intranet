@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 include('functions/loginverif.php');
 
 if (isset($_POST['reset'])) {
+    $length = 10;
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -18,7 +19,10 @@ if (isset($_POST['reset'])) {
     $password = hash('sha256', $randomString);
     $req = $bdd->prepare('UPDATE members_lspd SET password = ? WHERE ID = ?');
     $req->execute(array($password, $_GET['id']));
-    $stat = "Identifiants pour le compte de " . $name . " " . $firstname . " : " . $username . " / " . $randomString;
+    $req = $bdd->prepare('SELECT name, firstname, username FROM members_lspd WHERE ID = ?');
+    $req->execute(array($_GET['id']));
+    $req = $req->fetch();
+    $stat = "Identifiants pour le compte de " . $req['name'] . " " . $req['firstname'] . " : " . $req['username'] . " / " . $randomString ." / https://lspd.ethanduault.fr";
 }
 
 if (isset($_POST['submit'])) {
@@ -151,78 +155,78 @@ $req = $req->fetch();
                             <h6 class="m-0 font-weight-bold text-primary">Modifications</h6>
                         </div>
                         <form method='POST'>
-                        <div class="card-body">
+                            <div class="card-body">
                             <!-- show the informations about the person stored in the database -->
-                            <label for="matricule" class="col-sm-2 col-form-label">Matricule</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="matricule" name="matricule" placeholder="Matricule" value="<?php  echo $req['matricule']?>" required>
-                            </div>
-                            <label for="name" class="col-sm-2 col-form-label">Nom</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Nom Prénom" value="<?php  echo $req['name']?>" required>
-                            </div>
-                            <label for="firstname" class="col-sm-2 col-form-label">Prénom</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Prénom" value="<?php  echo $req['firstname']?>" required>
-                            </div>
-                            <label for="grade" class="col-sm-2 col-form-label">Grade</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="grade" name="grade" required>
-                                    <?php
-                                    $ranklist = ["Commandant", "Capitaine", "Lieutenant", "Sergent Chef", "Sergent", "Officier III", "Officier II", "Officier I", "Cadet"];
-                                    foreach ($ranklist as $rank) {
-                                        if ($rank == $req['grade']) {
-                                            echo "<option value='$rank' selected>$rank</option>";
-                                        } else {
-                                            echo "<option value='$rank'>$rank</option>";
+                                <label for="matricule" class="col-sm-2 col-form-label">Matricule</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="matricule" name="matricule" placeholder="Matricule" value="<?php  echo $req['matricule']?>" required>
+                                </div>
+                                <label for="name" class="col-sm-2 col-form-label">Nom</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nom Prénom" value="<?php  echo $req['name']?>" required>
+                                </div>
+                                <label for="firstname" class="col-sm-2 col-form-label">Prénom</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Prénom" value="<?php  echo $req['firstname']?>" required>
+                                </div>
+                                <label for="grade" class="col-sm-2 col-form-label">Grade</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="grade" name="grade" required>
+                                        <?php
+                                        $ranklist = ["Commandant", "Capitaine", "Lieutenant", "Sergent Chef", "Sergent", "Officier III", "Officier II", "Officier I", "Cadet"];
+                                        foreach ($ranklist as $rank) {
+                                            if ($rank == $req['grade']) {
+                                                echo "<option value='$rank' selected>$rank</option>";
+                                            } else {
+                                                echo "<option value='$rank'>$rank</option>";
+                                            }
                                         }
+                                        ?>
+                                    </select>
+                                </div>
+                                <label for="phone" class="col-sm-2 col-form-label">Téléphone</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?php  echo $req['tel'];?>" required>
+                                </div>
+                                <label for="division" class="col-sm-2 col-form-label">Division</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="division" name="division" required>
+                                        <?php $divisionlist = ["Aucune", "SWAT", "SAHP", "Henry", "DOA"];
+                                            foreach ($divisionlist as $division) {
+                                                if ($division == $req['division']) {
+                                                    echo "<option value='$division' selected>$division</option>";
+                                                } else {
+                                                    echo "<option value='$division'>$division</option>";
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <label for="sanction" class="col-sm-2 col-form-label">Sanction</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="sanction" name="sanction" required>
+                                        <?php $sanctionlist = ["Aucune", "Avertissement", "Blâme"];
+                                            foreach ($sanctionlist as $sanction) {
+                                                if ($sanction == $req['sanction']) {
+                                                    echo "<option value='$sanction' selected>$sanction</option>";
+                                                } else {
+                                                    echo "<option value='$sanction'>$sanction</option>";
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a href="list_members.php" class="btn btn-secondary">Retour</a>
+                                <input type="submit" class="btn btn-warning" value="Réinitialiser le mot de passe" name="reset">
+                                <input type="submit" class="btn btn-success" value="Enregistrer" name="submit">
+                                <?php
+                                    if(isset($stat)) {
+                                        echo '<div class="alert alert-success" role="alert">'.$stat.' <button type="button" class="btn btn-primary" onclick="copyToClipboard(\''.$stat.'\')">Copier</button></div>';
                                     }
-                                    ?>
-                                    
-                                </select>
+                                ?>
                             </div>
-                            <label for="phone" class="col-sm-2 col-form-label">Téléphone</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?php  echo $req['tel'];?>" required>
-                            </div>
-                            <label for="division" class="col-sm-2 col-form-label">Division</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="division" name="division" required>
-                                    <?php $divisionlist = ["Aucune", "SWAT", "SAHP", "Henry", "DOA"];
-                                    foreach ($divisionlist as $division) {
-                                        if ($division == $req['division']) {
-                                            echo "<option value='$division' selected>$division</option>";
-                                        } else {
-                                            echo "<option value='$division'>$division</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <label for="sanction" class="col-sm-2 col-form-label">Sanction</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="sanction" name="sanction" required>
-                                    <?php $sanctionlist = ["Aucune", "Avertissement", "Blâme"];
-                                    foreach ($sanctionlist as $sanction) {
-                                        if ($sanction == $req['sanction']) {
-                                            echo "<option value='$sanction' selected>$sanction</option>";
-                                        } else {
-                                            echo "<option value='$sanction'>$sanction</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="list_members.php" class="btn btn-secondary">Retour</a>
-                            <input type="submit" class="btn btn-warning" value="Réinitialiser le mot de passe" name="reset">
-                            <input type="submit" class="btn btn-success" value="Enregistrer" name="submit">
-                            <?php if(isset($stat)) {
-                                    echo '<div class="alert alert-success" role="alert">'.$stat.'</div>';
-                                }
-                                    ?>
-                        </div>
                         </form>
                     </div>
 
@@ -285,6 +289,18 @@ $req = $req->fetch();
     <script src="js/sb-admin-2.min.js"></script>
 
     <script src="https://kit.fontawesome.com/bf7b7dc291.js" crossorigin="anonymous"></script>
+    <script>
+        function copyToClipboard(text) {
+            var dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            alert("Copié !");
+        }
+    </script>
 </body>
 
 </html>

@@ -103,7 +103,7 @@ include('functions/loginverif.php');
                                 <label for="agent">Agent</label>
                                 <select class="form-control" id="agent" name="agent">
                                     <?php
-                                    $reqagent = $bdd->prepare("SELECT ID, firstname, name FROM members_lspd ORDER BY name ASC");
+                                    $reqagent = $bdd->prepare("SELECT ID, firstname, name FROM members_lspd ORDER BY gradevalue DESC");
                                     $reqagent->execute();
                                     while($agent = $reqagent->fetch()){
                                         echo '<option value="'.$agent['ID'].'">'.$agent['firstname'].' '.$agent['name'].'</option>';
@@ -113,6 +113,7 @@ include('functions/loginverif.php');
                                 <label for="formation">Formation</label>
                                 <select class="form-control" id="formation" name="formation">
                                     <option value="ppa">PPA</option>
+                                    <option value="ppa2">PPA 2</option>
                                     <option value="recruteur">Recruteur/Instructeur</option>
                                     <option value="dispatcheur">Dispatcheur</option>
                                     <option value="conduite">Stage conduite sécurité</option>
@@ -160,7 +161,7 @@ include('functions/loginverif.php');
                                     <label for="agent2">Agent</label>
                                     <select class="form-control" id="agent2" name="agent2">
                                         <?php
-                                        $reqagent = $bdd->prepare("SELECT ID, firstname, name FROM members_lspd ORDER BY name ASC");
+                                        $reqagent = $bdd->prepare("SELECT ID, firstname, name FROM members_lspd ORDER BY gradevalue DESC");
                                         $reqagent->execute();
                                         while($agent = $reqagent->fetch()){
                                             echo '<option value="'.$agent['ID'].'">'.$agent['firstname'].' '.$agent['name'].'</option>';
@@ -170,6 +171,7 @@ include('functions/loginverif.php');
                                     <label for="formation2">Formation</label>
                                     <select class="form-control" id="formation2" name="formation2">
                                         <option value="ppa">PPA</option>
+                                        <option value="ppa2">PPA 2</option>
                                         <option value="recruteur">Recruteur/Instructeur</option>
                                         <option value="dispatcheur">Dispatcheur</option>
                                         <option value="conduite">Stage conduite sécurité</option>
@@ -223,6 +225,7 @@ include('functions/loginverif.php');
                                             <th>Sanction</th>
                                             <th>Division</th>
                                             <th>PPA</th>
+                                            <th>PPA 2</th>
                                             <th>Recruteur / Instructeur</th>
                                             <th>Dispatcheur</th>
                                             <th>Stage conduite sécurité</th>
@@ -251,6 +254,11 @@ include('functions/loginverif.php');
                                             }
                                             echo '<td class="text-center">' . $data['division'] . '</td>';
                                             if ($data['ppa'] == 1) {
+                                                echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['ppa2'] == 1) {
                                                 echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';
@@ -301,6 +309,7 @@ include('functions/loginverif.php');
                                             <th>Sanction</th>
                                             <th>Division</th>
                                             <th>PPA</th>
+                                            <th>PPA 2</th>
                                             <th>Recruteur / Instructeur</th>
                                             <th>Dispatcheur</th>
                                             <th>Stage conduite sécurité</th>
@@ -320,15 +329,20 @@ include('functions/loginverif.php');
                                             echo '<td class="text-center">' . $data['grade'] . '</td>';
                                             echo '<td class="text-center">' . $data['tel'] . '</td>';
                                             echo '<td class="text-center">' . date("d/m/Y", strtotime($data['entrydate'])) . '</td>';
-                                            if ($data['sanction'] == 0){
+                                            if ($data['sanction'] == "Aucune"){
                                                 echo '<td class="text-center"><div style="color: green;">Aucune</div></td>';
-                                            } elseif ($data['sanction'] == 1){
+                                            } elseif ($data['sanction'] == "Avertissement"){
                                                 echo '<td class="text-center"><div style="color: orange;">Avertissement</div></td>';
-                                            } elseif ($data['sanction'] == 2){
+                                            } elseif ($data['sanction'] == "Blâme"){
                                                 echo '<td class="text-center"><div style="color: red;">Blâme</div></td>';
                                             }
                                             echo '<td class="text-center">' . $data['division'] . '</td>';
                                             if ($data['ppa'] == 1) {
+                                                echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['ppa2'] == 1) {
                                                 echo '<td class="text-center"><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td class="text-center"><i class="fas fa-times" style="color: red;"></i></td>';

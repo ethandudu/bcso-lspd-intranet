@@ -232,6 +232,7 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <label for="officier_present" class="col-sm-2 col-form-label">Officier(s) présent(s)</label>
                                     <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="officier_present" name="officier_present" value="Intervention solo" readonly>
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#officierModal">Ajouter</button>
                                         <div class="modal fade" id="officierModal" tabindex="-1" role="dialog" aria-labelledby="officierModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
@@ -261,10 +262,23 @@ if (isset($_POST['submit'])) {
                                                                 var officier = [];
                                                                 var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
                                                                 for (var i = 0; i < checkboxes.length; i++) {
-                                                                    officier.push(checkboxes[i].id);
+                                                                    officier.push(checkboxes[i].id);           
                                                                 }
+                                                                // get the value of the label for each checkbox checked and put it in an array
+                                                                var officier_present = [];
+                                                                var labels = document.querySelectorAll('input[type=checkbox]:checked + label')
+                                                                for (var i = 0; i < labels.length; i++) {
+                                                                    officier_present.push(labels[i].textContent);
+                                                                }
+
                                                                 // send the json array into a hidden input
                                                                 document.getElementById("officiers_presents").value = JSON.stringify(officier);
+                                                                // get the name of each checkbox checked and put it in the readonly input
+                                                                if (officier_present.length == 0){
+                                                                    officier_present.push("Intervention solo");
+                                                                }
+                                                                
+                                                                document.getElementById("officier_present").value = officier_present.join(" | ");
                                                                 // close the modal
                                                                 $('#officierModal').modal('hide');
                                                             }

@@ -106,6 +106,7 @@ include('functions/loginverif.php');
                                             <th>Nom Prénom</th>
                                             <th>Date de naissance</th>
                                             <th>Téléphone</th>
+                                            <th>Emploi</th>
                                             <th>Note</th>
                                             <th>Actions</th>
                                         </tr>
@@ -115,6 +116,7 @@ include('functions/loginverif.php');
                                             <th>Nom Prénom</th>
                                             <th>Date de naissance</th>
                                             <th>Téléphone</th>
+                                            <th>Emploi</th>
                                             <th>Note</th>
                                             <th>Actions</th>
                                         </tr>
@@ -122,7 +124,7 @@ include('functions/loginverif.php');
                                     <tbody>
                                         <!-- get infos from database -->
                                         <?php
-                                        $req = $bdd->prepare('SELECT ID, name, firstname, birthdate, tel, note FROM civils_lspd ORDER BY name ASC');
+                                        $req = $bdd->prepare('SELECT ID, name, firstname, birthdate, tel, note, job FROM civils_lspd ORDER BY name ASC');
                                         $req->execute();
                                         while ($data = $req->fetch()) {
                                             echo '<tr>';
@@ -130,9 +132,10 @@ include('functions/loginverif.php');
                                             $date = date_create($data['birthdate']);
                                             echo '<td>' . date_format($date, 'd/m/Y') . '</td>';
                                             echo '<td>' . $data['tel'] . '</td>';
+                                            echo '<td>' . $data['job'] . '</td>';
                                             echo '<td>' . $data['note'] . '</td>';
 
-                                            echo '<td><a href="details_civils.php?id=' . $data['ID'] . '"><i class="fas fa-eye"></i></a> <a href="edit_civil.php?id=' . $data['ID'] . '"><i class="fas fa-edit"></i></a> <a href="delete_civils.php?id=' . $data['ID'] . '"><i class="fas fa-trash-alt"></i></a></td>';
+                                            echo '<td><a href="details_civils.php?id=' . $data['ID'] . '"><i class="fas fa-eye"></i></a> <a href="edit_civil.php?id=' . $data['ID'] . '"><i class="fas fa-edit"></i></a> <a href="delete_civil.php?id=' . $data['ID'] . '"><i class="fas fa-trash-alt"></i></a></td>';
                                         }
                                         ?>
                                         

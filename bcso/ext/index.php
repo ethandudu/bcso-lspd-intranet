@@ -17,7 +17,7 @@ if (!isset($_SESSION['id'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Accueil - BCSO</title>
+    <title>Accueil - Extranet</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -43,7 +43,7 @@ if (!isset($_SESSION['id'])) {
                 <div class="sidebar-brand-icon">
                     <img src="assets/logo_bcso.png" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">BCSO</div>
+                <div class="sidebar-brand-text mx-3">Extranet</div>
             </a>
 
             <!-- Divider -->
@@ -124,10 +124,15 @@ if (!isset($_SESSION['id'])) {
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Agents</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php
-                                            $reqagent = $bdd->prepare('SELECT COUNT(*) FROM members');
+                                            $reqagent = $bdd->prepare('SELECT COUNT(*) FROM members_lspd');
                                             $reqagent->execute();
                                             $agentnb=$reqagent->fetch();
-                                            echo($agentnb[0]);
+                                            $count = $agentnb[0];
+                                            $reqagent = $bdd->prepare('SELECT COUNT(*) FROM members_bcso');
+                                            $reqagent->execute();
+                                            $agentnb=$reqagent->fetch();
+                                            $count = $count + $agentnb[0];
+                                            echo($count);
                                             ?>
                                             </div>
                                         </div>
@@ -147,10 +152,15 @@ if (!isset($_SESSION['id'])) {
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Civils recensés</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php
-                                            $reqcivils = $bdd->prepare('SELECT COUNT(*) FROM civil');
+                                            $reqcivils = $bdd->prepare('SELECT COUNT(*) FROM civils_lspd');
                                             $reqcivils->execute();
                                             $civilsnb=$reqcivils->fetch();
-                                            echo($civilsnb[0]);
+                                            $count = $civilsnb[0];
+                                            $reqcivils = $bdd->prepare('SELECT COUNT(*) FROM civils_bcso');
+                                            $reqcivils->execute();
+                                            $civilsnb=$reqcivils->fetch();
+                                            $count = $count + $civilsnb[0];
+                                            echo($count);
                                             ?></div>
                                         </div>
                                         <div class="col-auto">
@@ -171,10 +181,15 @@ if (!isset($_SESSION['id'])) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php
-                                                    $reqcasiers = $bdd->prepare('SELECT COUNT(*) FROM wanted');
+                                                    $reqcasiers = $bdd->prepare('SELECT COUNT(*) FROM wanted_lspd');
                                                     $reqcasiers->execute();
                                                     $casiersnb=$reqcasiers->fetch();
-                                                    echo($casiersnb[0]);
+                                                    $count = $casiersnb[0];
+                                                    $reqcasiers = $bdd->prepare('SELECT COUNT(*) FROM wanted_bcso');
+                                                    $reqcasiers->execute();
+                                                    $casiersnb=$reqcasiers->fetch();
+                                                    $count = $count + $casiersnb[0];
+                                                    echo($count);
                                                     ?></div>
                                                 </div>
                                             </div>
@@ -196,10 +211,15 @@ if (!isset($_SESSION['id'])) {
                                                 Casiers</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php
-                                                    $reqcasiers = $bdd->prepare('SELECT COUNT(*) FROM casiers');
+                                                    $reqcasiers = $bdd->prepare('SELECT COUNT(*) FROM casiers_lspd');
                                                     $reqcasiers->execute();
                                                     $casiersnb=$reqcasiers->fetch();
-                                                    echo($casiersnb[0]);
+                                                    $count = $casiersnb[0];
+                                                    $reqcasiers = $bdd->prepare('SELECT COUNT(*) FROM casiers_bcso');
+                                                    $reqcasiers->execute();
+                                                    $casiersnb=$reqcasiers->fetch();
+                                                    $count = $count + $casiersnb[0];
+                                                    echo($count);
                                                     ?></div>
                                             </div>
                                         </div>
@@ -211,59 +231,6 @@ if (!isset($_SESSION['id'])) {
                             </div>
                         </div>
                     </div>
-
-                    <!-- Content Row -->
-
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        <div class="col-xl col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Actions rapides</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <!-- add buttons here -->
-                                    <a href="civils.php" class="btn btn-primary btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-book"></i>
-                                        </span>
-                                        <span class="text">Civils</span>
-                                    </a>
-                                    <a href="casiers.php" class="btn btn-warning btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-folder-open"></i>
-                                        </span>
-                                        <span class="text">Casiers</span>
-                                    </a>
-                                    <a href="wanted.php" class="btn btn-danger btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-handcuffs"></i>
-                                        </span>
-                                        <span class="text">Wanted</span>
-                                    </a>
-                                    <a href="amendes.php" class="btn btn-success btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-money-bill-wave"></i>
-                                        </span>
-                                        <span class="text">Amendes</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        
-
-                        <!-- Pie Chart -->
-                        
-                    </div>
-
-                    <!-- Content Row -->
-                    
-
                 </div>
                 <!-- /.container-fluid -->
 

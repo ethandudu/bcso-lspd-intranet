@@ -201,6 +201,7 @@ $vehicle = $vehicle->fetch();
                                     <thead>
                                         <tr>
                                             <th>PPA</th>
+                                            <th>PPA 2</th>
                                             <th>Stage conduite sécurité</th>
                                             <th>Négociateur</th>
                                             <th>Dispatcheur</th>
@@ -210,11 +211,16 @@ $vehicle = $vehicle->fetch();
                                     <tbody>
                                         <!-- get infos from database -->
                                         <?php
-                                        $req = $bdd->prepare('SELECT ppa, conduite, negociateur, dispatcheur, recruteur FROM members_lspd WHERE ID = ?');
+                                        $req = $bdd->prepare('SELECT ppa, ppa2, conduite, negociateur, dispatcheur, recruteur FROM members_lspd WHERE ID = ?');
                                         $req->execute(array($_COOKIE['id']));
                                         while ($data = $req->fetch()) {
                                             echo '<tr>';
                                             if ($data['ppa'] == 1) {
+                                                echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
+                                            } else {
+                                                echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
+                                            }
+                                            if ($data['ppa2'] == 1) {
                                                 echo '<td><i class="fas fa-check" style="color: green;"></i></td>';
                                             } else {
                                                 echo '<td><i class="fas fa-times" style="color: red;"></i></td>';
