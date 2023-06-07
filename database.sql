@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : dim. 30 avr. 2023 à 10:52
+-- Généré le : mer. 07 juin 2023 à 08:58
 -- Version du serveur : 10.6.12-MariaDB-0ubuntu0.22.04.1
 -- Version de PHP : 8.1.2-1ubuntu2.11
 
@@ -24,6 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `amendes`
+--
+
+CREATE TABLE `amendes` (
+  `ID` int(11) NOT NULL,
+  `type` text DEFAULT NULL,
+  `name` text DEFAULT NULL,
+  `value` int(11) DEFAULT NULL,
+  `other` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `casiers_bcso`
 --
 
@@ -34,7 +48,8 @@ CREATE TABLE `casiers_bcso` (
   `sanction` varchar(255) NOT NULL,
   `officier` int(11) NOT NULL,
   `datetime` datetime NOT NULL,
-  `note` text DEFAULT NULL
+  `note` text DEFAULT NULL,
+  `officiers_presents` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`officiers_presents`))
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
@@ -88,7 +103,7 @@ CREATE TABLE `civils_lspd` (
   `firstname` varchar(255) NOT NULL,
   `birthdate` date NOT NULL,
   `tel` varchar(14) NOT NULL,
-  `job` varchar(255) DEFAULT NULL,
+  `job` varchar(255) DEFAULT 'Chômeur',
   `picface` varchar(255) DEFAULT NULL,
   `picback` varchar(255) DEFAULT NULL,
   `picright` varchar(255) DEFAULT NULL,
@@ -167,6 +182,38 @@ CREATE TABLE `externs` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `fines_bcso`
+--
+
+CREATE TABLE `fines_bcso` (
+  `ID` int(11) NOT NULL,
+  `factureid` int(11) NOT NULL,
+  `civilid` int(11) NOT NULL,
+  `officierid` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fines_lspd`
+--
+
+CREATE TABLE `fines_lspd` (
+  `ID` int(11) NOT NULL,
+  `factureid` int(11) NOT NULL,
+  `civilid` int(11) NOT NULL,
+  `officierid` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `members_bcso`
 --
 
@@ -180,6 +227,7 @@ CREATE TABLE `members_bcso` (
   `tel` varchar(14) NOT NULL,
   `pic` tinyint(4) DEFAULT NULL,
   `note` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `visite_medicale` date DEFAULT NULL,
   `division` text DEFAULT 'Aucune',
   `ppa1` tinyint(1) DEFAULT 0,
   `ppa2` tinyint(1) NOT NULL DEFAULT 0,
@@ -216,11 +264,65 @@ CREATE TABLE `members_lspd` (
   `note` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `division` text DEFAULT 'Aucune',
   `ppa` tinyint(1) NOT NULL DEFAULT 0,
+  `ppa2` tinyint(1) NOT NULL DEFAULT 0,
   `conduite` tinyint(1) NOT NULL DEFAULT 0,
   `negociateur` tinyint(1) NOT NULL DEFAULT 0,
   `dispatcheur` tinyint(1) NOT NULL DEFAULT 0,
   `recruteur` tinyint(1) NOT NULL DEFAULT 0,
   `dispatch_unit` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages_bcso`
+--
+
+CREATE TABLE `messages_bcso` (
+  `ID` int(11) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `sender` int(11) NOT NULL,
+  `sender_type` varchar(4) NOT NULL DEFAULT 'BCSO',
+  `receiver` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `text` text NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `markasread` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages_lspd`
+--
+
+CREATE TABLE `messages_lspd` (
+  `ID` int(11) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `sender` int(11) NOT NULL,
+  `sender_type` varchar(4) NOT NULL DEFAULT 'LSPD',
+  `receiver` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `text` text NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `markasread` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `notifications_bcso`
+--
+
+CREATE TABLE `notifications_bcso` (
+  `ID` int(11) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `sender` int(11) NOT NULL,
+  `receiver` int(11) NOT NULL,
+  `civilid` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `markasread` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -320,9 +422,33 @@ CREATE TABLE `wanted_lspd` (
   `public` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `weapons`
+--
+
+CREATE TABLE `weapons` (
+  `ID` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `firstname` varchar(30) NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `serialnumber` varchar(25) NOT NULL,
+  `weapon_type` varchar(60) NOT NULL,
+  `saisie` tinyint(1) NOT NULL DEFAULT 0,
+  `officier` int(11) NOT NULL,
+  `officier_type` varchar(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `amendes`
+--
+ALTER TABLE `amendes`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Index pour la table `casiers_bcso`
@@ -379,6 +505,18 @@ ALTER TABLE `externs`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Index pour la table `fines_bcso`
+--
+ALTER TABLE `fines_bcso`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Index pour la table `fines_lspd`
+--
+ALTER TABLE `fines_lspd`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Index pour la table `members_bcso`
 --
 ALTER TABLE `members_bcso`
@@ -388,6 +526,24 @@ ALTER TABLE `members_bcso`
 -- Index pour la table `members_lspd`
 --
 ALTER TABLE `members_lspd`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Index pour la table `messages_bcso`
+--
+ALTER TABLE `messages_bcso`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Index pour la table `messages_lspd`
+--
+ALTER TABLE `messages_lspd`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Index pour la table `notifications_bcso`
+--
+ALTER TABLE `notifications_bcso`
   ADD PRIMARY KEY (`ID`);
 
 --
@@ -427,8 +583,20 @@ ALTER TABLE `wanted_lspd`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Index pour la table `weapons`
+--
+ALTER TABLE `weapons`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
+
+--
+-- AUTO_INCREMENT pour la table `amendes`
+--
+ALTER TABLE `amendes`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `casiers_bcso`
@@ -485,6 +653,18 @@ ALTER TABLE `externs`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `fines_bcso`
+--
+ALTER TABLE `fines_bcso`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `fines_lspd`
+--
+ALTER TABLE `fines_lspd`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `members_bcso`
 --
 ALTER TABLE `members_bcso`
@@ -494,6 +674,24 @@ ALTER TABLE `members_bcso`
 -- AUTO_INCREMENT pour la table `members_lspd`
 --
 ALTER TABLE `members_lspd`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `messages_bcso`
+--
+ALTER TABLE `messages_bcso`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `messages_lspd`
+--
+ALTER TABLE `messages_lspd`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `notifications_bcso`
+--
+ALTER TABLE `notifications_bcso`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -530,6 +728,12 @@ ALTER TABLE `wanted_bcso`
 -- AUTO_INCREMENT pour la table `wanted_lspd`
 --
 ALTER TABLE `wanted_lspd`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `weapons`
+--
+ALTER TABLE `weapons`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
